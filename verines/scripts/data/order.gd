@@ -28,6 +28,7 @@ var state: State = State.CREATED
 var mistakes: int = 0
 var hints_used: int = 0
 var paid: bool = false
+<<<<<<< HEAD
 ## Personalizações pedidas pelo cliente: [{ingredient_id, percent}] (+50 = 50% a mais, -100 = sem).
 var mods: Array[Dictionary] = []
 ## Paciência (0 a 100). patience_sec = segundos até esgotar (0 = cliente sem pressa).
@@ -51,6 +52,8 @@ func drain_patience(seconds: float, multiplier: float = 1.0) -> bool:
 		return false
 	patience = maxf(0.0, patience - seconds * multiplier * 100.0 / patience_sec)
 	return patience <= 0.0
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func transition(to: State) -> bool:
 	var options: Array = ALLOWED.get(state, [])
@@ -60,12 +63,15 @@ func transition(to: State) -> bool:
 	push_warning("Transição de pedido inválida: %s -> %s" % [state_name(state), state_name(to)])
 	return false
 
+<<<<<<< HEAD
 func mod_percent(ingredient_id: String) -> int:
 	for m in mods:
 		if m["ingredient_id"] == ingredient_id:
 			return int(m["percent"])
 	return 0
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func is_closed() -> bool:
 	return state in [State.COMPLETED, State.CANCELLED, State.FAILED]
 
@@ -100,9 +106,13 @@ func to_dict() -> Dictionary:
 		"servings": servings, "clue_ids": clue_ids, "hidden_clue_ids": hidden_clue_ids,
 		"restrictions": restrictions, "deadline_sec": deadline_sec,
 		"base_reward_cents": base_reward_cents, "state": int(state), "mistakes": mistakes,
+<<<<<<< HEAD
 		"hints_used": hints_used, "paid": paid, "mods": mods,
 		"patience": patience, "patience_sec": patience_sec, "channel": channel, "address": address,
 		"route": route, "followup": followup, "portion_style": portion_style,
+=======
+		"hints_used": hints_used, "paid": paid,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	}
 
 static func from_dict(d: Dictionary) -> Order:
@@ -123,6 +133,7 @@ static func from_dict(d: Dictionary) -> Order:
 	o.mistakes = int(d.get("mistakes", 0))
 	o.hints_used = int(d.get("hints_used", 0))
 	o.paid = bool(d.get("paid", false))
+<<<<<<< HEAD
 	for m in d.get("mods", []):
 		o.mods.append({"ingredient_id": str(m["ingredient_id"]), "percent": int(m["percent"])})
 	o.patience = float(d.get("patience", 100.0))
@@ -133,4 +144,6 @@ static func from_dict(d: Dictionary) -> Order:
 	var fu: Variant = d.get("followup", {})
 	o.followup = fu if typeof(fu) == TYPE_DICTIONARY else {}
 	o.portion_style = str(d.get("portion_style", "normal"))
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	return o

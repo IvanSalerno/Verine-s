@@ -10,12 +10,17 @@ const PATHS_COZINHA: Array[String] = ["res://assets/cenarios/cozinha.png"]
 const PATHS_PREPARO: Array[String] = ["res://assets/cenarios/preparacao.png"]
 const PATHS_FOGAO: Array[String] = ["res://assets/cenarios/fogao.png"]
 ## Palavras que indicam que a etapa usa o fogão/forno.
+<<<<<<< HEAD
 const HEAT_WORDS: Array[String] = ["assar", "cozinhar", "fritar", "aquecer", "calda", "forno", "grelhar"]
+=======
+const HEAT_WORDS: Array[String] = ["assar", "cozinhar", "fritar", "aquecer", "calda", "forno"]
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 var _bg: TextureRect
 var _tex_cozinha: Texture2D
 var _tex_preparo: Texture2D
 var _tex_fogao: Texture2D
+<<<<<<< HEAD
 ## Montagem: arraste da bancada (fichas com imagem) para a tigela — ou, no hambúrguer, para o prato,
 ## onde os ingredientes empilham em camadas. Coordenadas do Palco (1280×720).
 const BOWL_RECT := Rect2(880, 292, 340, 172)
@@ -60,6 +65,12 @@ const BASE_BUN_IMAGE := "pao_hamburguer_base"   # metade de baixo do pão (a de 
 @onready var _dish_block: ColorRect = $Palco/Prato
 @onready var _dish_label: Label = $Palco/Prato/Texto
 @onready var _recipe_label: Label = $Palco/Receita
+=======
+
+@onready var _dish_block: ColorRect = $Prato
+@onready var _dish_label: Label = $Prato/Texto
+@onready var _recipe_label: Label = $Receita
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _ready() -> void:
 	_dish_block.set_meta("keep", true)
@@ -68,12 +79,16 @@ func _ready() -> void:
 	_tex_preparo = SceneBackground.load_first(PATHS_PREPARO)
 	_tex_fogao = SceneBackground.load_first(PATHS_FOGAO)
 	SceneBackground.style_label_for_art(_recipe_label)
+<<<<<<< HEAD
 	_build_assembly()
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	Flow.state_changed.connect(_update)
 	Flow.order_changed.connect(_update)
 	Flow.dish_changed.connect(_update)
 	_update()
 
+<<<<<<< HEAD
 func _build_assembly() -> void:
 	var palco: Control = $Palco
 	_bowl = DropBowl.new()
@@ -429,6 +444,8 @@ func _drop_top_bun() -> void:
 	tw.tween_property(_bowl, "modulate", Color(1.15, 1.1, 0.8), 0.15)
 	tw.tween_property(_bowl, "modulate", Color.WHITE, 0.35)
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 ## Escolhe a imagem conforme o que está acontecendo na cozinha.
 func _pick_texture() -> Texture2D:
 	var d := Flow.dish
@@ -448,12 +465,17 @@ func _update(_unused: int = 0) -> void:
 	if active:
 		var r: Recipe = GameData.recipes[o.selected_recipe_id]
 		_recipe_label.text = "Pedido de %s: %s (%d porções)" % [o.customer_name, r.display_name, o.servings]
+<<<<<<< HEAD
 		if not o.restrictions.is_empty():
 			_recipe_label.text += " — %s" % GameData.restriction_text(o.restrictions)
 	var d := Flow.dish
 	var ready_shown := _update_ready_view(d)
 	_dish_block.visible = d != null and not has_image and not Flow.is_assembly_step() and not ready_shown
 	_update_assembly()
+=======
+	var d := Flow.dish
+	_dish_block.visible = d != null and not has_image   # com imagem, o painel abaixo mostra as etapas
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	if d != null:
 		var recipe: Recipe = GameData.recipes[d.recipe_id]
 		if d.state == Dish.State.READY:

@@ -10,6 +10,7 @@ var upgrades: Dictionary = {}      # id -> Upgrade
 var order_templates: Array[Dictionary] = []
 var story_notes: Array[Dictionary] = []
 
+<<<<<<< HEAD
 ## Restrições alimentares: cada uma troca ingredientes da receita por versões compatíveis
 ## (que precisam ser compradas na Despensa).
 const RESTRICTIONS := {
@@ -47,15 +48,24 @@ func _ready() -> void:
 	_build_ingredients()
 	_build_recipes()
 	_build_heat()
+=======
+func _ready() -> void:
+	_build_ingredients()
+	_build_recipes()
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_build_clues()
 	_link_clues_to_recipes()
 	_build_challenges()
 	_build_upgrades()
 	_build_orders()
+<<<<<<< HEAD
 	_build_extra_orders()
 	_build_extra_upgrades()
 	_build_story()
 	_build_backlog_content()
+=======
+	_build_story()
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_validate_data()
 
 # ---------------------------------------------------------------- ingredientes
@@ -71,6 +81,7 @@ func _build_ingredients() -> void:
 	_add_ingredient("queijo", "Queijo", Units.Unit.G, 500, 2200, "Laticínios", 2000, 150)
 	_add_ingredient("leite", "Leite", Units.Unit.ML, 1000, 550, "Laticínios", 5000, 300)
 	_add_ingredient("ovo", "Ovos", Units.Unit.UN, 12, 1200, "Frescos", 36, 4)
+<<<<<<< HEAD
 	# substitutos para restrições alimentares (mais caros)
 	_add_ingredient("leite_zero", "Leite sem lactose", Units.Unit.ML, 1000, 900, "Sem lactose", 3000, 0)
 	_add_ingredient("queijo_zero", "Queijo sem lactose", Units.Unit.G, 500, 3000, "Sem lactose", 1500, 0)
@@ -83,6 +94,8 @@ func _build_ingredients() -> void:
 	_add_ingredient("tomate", "Tomate", Units.Unit.G, 500, 500, "Hortifrúti", 2000, 100)
 	# pizza
 	_add_ingredient("queijo_ralado", "Queijo ralado", Units.Unit.G, 500, 2200, "Laticínios", 2000, 100)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 # -------------------------------------------------------------------- receitas
 func _add_recipe(id: String, nm: String, desc: String, base: int, price: int,
@@ -124,6 +137,7 @@ func _build_recipes() -> void:
 		.add_line("ovo", 1, Units.Unit.UN) \
 		.add_line("leite", 200, Units.Unit.ML, true)
 
+<<<<<<< HEAD
 	# Hambúrguer: grelhar a carne e depois montar em camadas (montagem com animação de empilhar)
 	var burger := _add_recipe("hamburguer", "Hambúrguer da Casa", "Pão, carne grelhada, queijo e salada, montados em camadas.", 2, 800,
 		["Grelhar a carne", "Montar o hambúrguer", "Servir"])
@@ -147,6 +161,8 @@ func _build_recipes() -> void:
 	pizza.assembly_first = "farinha"   # a massa é a base
 	pizza.layer_images = {"farinha": "massa_pizza", "farinha_sg": "massa_pizza", "queijo_zero": "queijo_ralado"}
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_add_recipe("pudim_verine", "Pudim do Verine", "Receita antiga do avô, página parcialmente apagada.", 4, 900,
 		["Separar os ingredientes", "Fazer a calda", "Bater a mistura", "Assar em banho-maria", "Servir"], false) \
 		.add_line("leite", 500, Units.Unit.ML) \
@@ -159,11 +175,19 @@ func _add_clue(id: String, text: String, recipe_ids: Array) -> void:
 
 func _build_clues() -> void:
 	_add_clue("c_doce", "Prato doce, servido de sobremesa.", ["bolo", "pudim_verine"])
+<<<<<<< HEAD
 	_add_clue("c_forno", "Vai ao forno.", ["bolo", "lasanha", "pizza"])
 	_add_clue("c_massa_assada", "Massa assada.", ["lasanha"])
 	_add_clue("c_molho_tomate", "Leva molho de tomate.", ["lasanha", "macarrao_ao_molho", "pizza"])
 	_add_clue("c_queijo_gratinado", "Queijo derretido por cima.", ["lasanha", "pizza"])
 	_add_clue("c_camadas", "É montado em camadas.", ["lasanha", "hamburguer"])
+=======
+	_add_clue("c_forno", "Vai ao forno.", ["bolo", "lasanha"])
+	_add_clue("c_massa_assada", "Massa assada.", ["lasanha"])
+	_add_clue("c_molho_tomate", "Leva molho de tomate.", ["lasanha", "macarrao_ao_molho"])
+	_add_clue("c_queijo_gratinado", "Queijo derretido por cima.", ["lasanha"])
+	_add_clue("c_camadas", "É montado em camadas.", ["lasanha"])
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_add_clue("c_massa_cozida", "Massa cozida na panela.", ["macarrao_ao_molho"])
 	_add_clue("c_sem_forno", "Não precisa de forno.", ["macarrao_ao_molho", "panqueca"])
 	_add_clue("c_massa_fina", "Massa bem fina e leve.", ["panqueca"])
@@ -172,11 +196,14 @@ func _build_clues() -> void:
 	_add_clue("c_doce_domingo", "Era o doce de domingo do Verine.", ["pudim_verine"])
 	_add_clue("c_cremoso", "Textura cremosa que balança no prato.", ["pudim_verine"])
 	_add_clue("c_calda", "Coberto com calda dourada.", ["pudim_verine"])
+<<<<<<< HEAD
 	_add_clue("c_lanche", "É um lanche, comido com as mãos.", ["hamburguer"])
 	_add_clue("c_redonda", "É redonda e servida em fatias.", ["pizza"])
 	_add_clue("c_massa_aberta", "A massa é aberta bem fina antes de assar.", ["pizza"])
 	_add_clue("c_grelhado", "Leva carne grelhada na chapa.", ["hamburguer"])
 	_add_clue("c_pao", "Servido dentro de um pão.", ["hamburguer"])
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _link_clues_to_recipes() -> void:
 	for cid in clues:
@@ -280,11 +307,18 @@ func _add_order(tpl: Dictionary) -> void:
 
 func _build_orders() -> void:
 	# --- Nível 1 ---
+<<<<<<< HEAD
 	# Primeiro pedido do jogo (tutorial): um hambúrguer.
 	_add_order({"tutorial": true, "customer": "João", "kind": Order.Kind.DIRECT,
 		"text": "Bom dia! Quero um Hambúrguer da Casa, por favor. Para 2 pessoas.",
 		"recipe_id": "hamburguer", "servings": 2})
 	_add_order({"customer": "Felipe", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 1,
+=======
+	_add_order({"tutorial": true, "customer": "Dona Maria", "kind": Order.Kind.DIRECT,
+		"text": "Bom dia! Quero um Bolo da Vovó, por favor. Para 4 pessoas.",
+		"recipe_id": "bolo", "servings": 4})
+	_add_order({"customer": "João", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 1,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"text": "Estou com vontade de uma massa assada, com molho de tomate e queijo derretido por cima. Para 4, por favor.",
 		"recipe_id": "lasanha", "servings": 4,
 		"clues": ["c_massa_assada", "c_molho_tomate", "c_queijo_gratinado"], "hidden_clues": ["c_camadas"]})
@@ -295,6 +329,7 @@ func _build_orders() -> void:
 		"text": "Quero algo de massa assada, em camadas, com molho de tomate. Só para 2.",
 		"recipe_id": "lasanha", "servings": 2,
 		"clues": ["c_massa_assada", "c_molho_tomate"], "hidden_clues": ["c_queijo_gratinado"]})
+<<<<<<< HEAD
 	_add_order({"customer": "Caio", "kind": Order.Kind.DIRECT, "min_completed": 1,
 		"text": "Um Bolo da Vovó para 6 pessoas, por favor.",
 		"recipe_id": "bolo", "servings": 6})
@@ -307,11 +342,29 @@ func _build_orders() -> void:
 		"recipe_id": "macarrao_ao_molho", "servings": 4,
 		"clues": ["c_sem_forno", "c_molho_tomate"], "hidden_clues": ["c_massa_cozida"]})
 	_add_order({"customer": "Seu Tavares", "kind": Order.Kind.ENIGMATIC, "min_completed": 3,
+=======
+	_add_order({"customer": "Bia", "kind": Order.Kind.DIRECT, "min_completed": 1,
+		"text": "Um Bolo da Vovó para 6 pessoas, por favor.",
+		"recipe_id": "bolo", "servings": 6})
+	# --- Nível 2 ---
+	_add_order({"customer": "Seu Carlos", "kind": Order.Kind.DIRECT, "min_completed": 3,
+		"text": "Um Macarrão ao Molho para 6 pessoas. Vim com a família toda!",
+		"recipe_id": "macarrao_ao_molho", "servings": 6})
+	_add_order({"customer": "Dona Lúcia", "kind": Order.Kind.ENIGMATIC, "min_completed": 3,
+		"text": "Procuro um prato que não vai ao forno, é de massa e leva molho vermelho. Para 4 pessoas.",
+		"recipe_id": "macarrao_ao_molho", "servings": 4,
+		"clues": ["c_sem_forno", "c_molho_tomate"], "hidden_clues": ["c_massa_cozida"]})
+	_add_order({"customer": "Sr. Tavares", "kind": Order.Kind.ENIGMATIC, "min_completed": 3,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"text": "Meu pai vinha aqui todo domingo por causa de um doce que o Verine fazia. Cremoso, balançava no prato... Você sabe qual é? Para 4.",
 		"recipe_id": "pudim_verine", "servings": 4,
 		"clues": ["c_doce_domingo", "c_cremoso"], "hidden_clues": ["c_calda"]})
 	# --- Nível 3 ---
+<<<<<<< HEAD
 	_add_order({"customer": "Marta", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 6,
+=======
+	_add_order({"customer": "Dona Rosa", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 6,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"text": "Quero uma massa fininha, enrolada com recheio. Para 2 pessoas.",
 		"recipe_id": "panqueca", "servings": 2,
 		"clues": ["c_massa_fina", "c_recheio"], "hidden_clues": ["c_frigideira"]})
@@ -319,16 +372,25 @@ func _build_orders() -> void:
 		"text": "Preciso de algo leve, sem forno, que se enrola com recheio. Para 4 pessoas.",
 		"recipe_id": "panqueca", "servings": 4,
 		"clues": ["c_sem_forno", "c_recheio"], "hidden_clues": ["c_massa_fina", "c_frigideira"]})
+<<<<<<< HEAD
 	_add_order({"customer": "Seu Tavares", "kind": Order.Kind.ENIGMATIC, "min_completed": 6,
 		"text": "O doce de domingo do Verine, cremoso e com calda dourada, para a família inteira: 8 pessoas!",
 		"recipe_id": "pudim_verine", "servings": 8,
 		"clues": ["c_doce_domingo", "c_calda"], "hidden_clues": ["c_cremoso"]})
 	_add_order({"customer": "Rafael", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 6,
+=======
+	_add_order({"customer": "Sra. Vera", "kind": Order.Kind.ENIGMATIC, "min_completed": 6,
+		"text": "O doce de domingo do Verine, cremoso e com calda dourada, para a família inteira: 8 pessoas!",
+		"recipe_id": "pudim_verine", "servings": 8,
+		"clues": ["c_doce_domingo", "c_calda"], "hidden_clues": ["c_cremoso"]})
+	_add_order({"customer": "Rafa", "kind": Order.Kind.DESCRIPTIVE, "min_completed": 6,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"text": "Churrasco de aniversário! Quero a massa assada em camadas com queijo gratinado, para 8 pessoas.",
 		"recipe_id": "lasanha", "servings": 8,
 		"clues": ["c_massa_assada", "c_camadas", "c_queijo_gratinado"], "hidden_clues": ["c_molho_tomate"]})
 
 # ------------------------------------------------------------------- história
+<<<<<<< HEAD
 # ---------------------------------------------------------- cozimento (fogo/forno)
 ## set_heat(índice da etapa, minutos base, minutos por porção): tempo = base + por_porção × porções.
 func _build_heat() -> void:
@@ -372,6 +434,8 @@ func _build_extra_upgrades() -> void:
 	_add_upgrade(Upgrade.new("u_cardapio", "Cardápio ilustrado", "+5 pontos percentuais nas gorjetas.", 2200,
 		{"type": "tip_bonus_percent", "value": 5.0}))
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 ## TEXTOS PROVISÓRIOS: a sequência dos mistérios e o desfecho ainda serão definidos pela equipe.
 func _build_story() -> void:
 	story_notes.append({"at": 1, "text": "Entre as páginas do livro cai uma anotação: \"O segredo não está só na receita.\""})
@@ -379,6 +443,7 @@ func _build_story() -> void:
 	story_notes.append({"at": 6, "text": "Um cliente antigo comenta que o vovô guardava algo no fundo da despensa."})
 	story_notes.append({"at": 10, "text": "Você reconstruiu o restaurante. O mistério do livro ainda guarda uma última página..."})
 
+<<<<<<< HEAD
 # ------------------------------------------------------- backlog (v20)
 func _build_backlog_content() -> void:
 	# Restrições alimentares
@@ -500,6 +565,8 @@ func roll_event(rng: RandomNumberGenerator, day_number: int) -> String:
 			return str(id)
 	return "normal"
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func note_for(completed_count: int) -> String:
 	for n in story_notes:
 		if int(n["at"]) == completed_count:
@@ -521,6 +588,7 @@ func _validate_data() -> void:
 	for t in order_templates:
 		if not recipes.has(t["recipe_id"]):
 			push_error("Pedido aponta para receita inexistente: %s" % t["recipe_id"])
+<<<<<<< HEAD
 		for r in t.get("restrictions", []):
 			if not RESTRICTIONS.has(str(r)):
 				push_error("Pedido com restrição desconhecida: %s" % r)
@@ -529,3 +597,5 @@ func _validate_data() -> void:
 		for k in swap:
 			if not ingredients.has(str(k)) or not ingredients.has(str(swap[k])):
 				push_error("Restrição %s com ingrediente inexistente" % rid)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d

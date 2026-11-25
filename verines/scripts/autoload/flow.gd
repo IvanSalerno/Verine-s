@@ -6,8 +6,11 @@ signal state_changed(new_state: int)
 signal order_changed
 signal dish_changed
 signal challenge_started(challenge: MathChallenge)
+<<<<<<< HEAD
 ## Montagem: cada ingrediente solto na tigela/prato (para as animações). done = montagem completa.
 signal assembly_event(ingredient_id: String, ok: bool, done: bool)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 signal challenge_finished(ok: bool, message: String)
 signal notice(text: String)
 
@@ -20,6 +23,7 @@ const BONUS_NO_MISTAKE_PERCENT := 10.0
 const PENALTY_MISTAKE_PERCENT := 5.0
 const PENALTY_HINT_PERCENT := 3.0
 const MAX_PENALTY_PERCENT := 40.0
+<<<<<<< HEAD
 const SPECIAL_BONUS_PERCENT := 30.0   # bônus do prato do dia
 const UNLOCK_PUDIM_AT := 3
 # ---- backlog (v20)
@@ -35,6 +39,9 @@ const PORTION_NAMES := {"economica": "Econômica", "normal": "Normal", "generosa
 const PAUSED_STATES := [GameStates.Id.MAIN_MENU, GameStates.Id.INTRO, GameStates.Id.SETTINGS,
 	GameStates.Id.CREDITS, GameStates.Id.ENDING, GameStates.Id.RESULT, GameStates.Id.DAY_SUMMARY,
 	GameStates.Id.NEWSPAPER]
+=======
+const UNLOCK_PUDIM_AT := 3
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 var state: GameStates.Id = GameStates.Id.MAIN_MENU
 var return_state: GameStates.Id = GameStates.Id.RESTAURANT
@@ -53,6 +60,7 @@ var new_record: bool = false
 var settings_return: GameStates.Id = GameStates.Id.MAIN_MENU
 
 var _current_spec: Dictionary = {}
+<<<<<<< HEAD
 var _delivery_order_id: int = -1
 var heat_minutes: int = 20   # timer escolhido pelo jogador na etapa com fogo
 var waiting: Order = null               # cliente esperando na fila (no máximo 1: atendimento + fila)
@@ -61,12 +69,15 @@ var delivery_freight_cents: int = 0     # frete da entrega por telefone
 var last_rent_cents: int = 0            # contas cobradas no fechamento do dia
 var ending_kind: String = "vitoria"     # "vitoria" ou "falencia"
 var _queue_timer: float = 0.0
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 var _next_order_id: int = 1
 var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	_rng.randomize()
 
+<<<<<<< HEAD
 ## Paciência do cliente atual e da fila; chegada de clientes na fila.
 func _process(delta: float) -> void:
 	if state in PAUSED_STATES or not Settings.patience_enabled:
@@ -102,6 +113,8 @@ func _maybe_queue_customer() -> void:
 	say("Chegou mais um cliente: %s está esperando na fila." % waiting.customer_name)
 	order_changed.emit()
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func say(text: String) -> void:
 	notice.emit(text)
 
@@ -128,6 +141,7 @@ func start_game() -> void:
 	delivery_steps_done.clear()
 	last_result = {}
 	_next_order_id = 1
+<<<<<<< HEAD
 	waiting = null
 	followup_tpl = {}
 	delivery_freight_cents = 0
@@ -139,6 +153,12 @@ func finish_intro() -> void:
 		return   # evita abrir o jogo duas vezes (clique + segurar)
 	Game.today_event = "normal"
 	go(GameStates.Id.NEWSPAPER)   # o jornal do dia 1 apresenta o capítulo 1
+=======
+	go(GameStates.Id.INTRO)
+
+func finish_intro() -> void:
+	go(GameStates.Id.RESTAURANT)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func open_admin() -> void:
 	go(GameStates.Id.ADMINISTRATION)
@@ -157,6 +177,7 @@ func call_next_customer() -> bool:
 	if order != null and not order.is_closed():
 		say("Termine ou cancele o atendimento atual primeiro.")
 		return false
+<<<<<<< HEAD
 	if waiting != null:
 		order = waiting   # quem está na fila é atendido primeiro
 		waiting = null
@@ -169,6 +190,12 @@ func call_next_customer() -> bool:
 			return false
 		order = _create_order(tpl)
 	_queue_timer = 0.0
+=======
+	var tpl := _pick_template()
+	if tpl.is_empty():
+		return false
+	order = _create_order(tpl)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	adjusted = null
 	dish = null
 	challenge_queue.clear()
@@ -176,6 +203,7 @@ func call_next_customer() -> bool:
 	go(GameStates.Id.ACTIVE_ORDER)
 	return true
 
+<<<<<<< HEAD
 ## exclude_customer: não repete quem já está sendo atendido; allow_phone: false para a fila do balcão.
 func _pick_template(exclude_customer: String = "", allow_phone: bool = true) -> Dictionary:
 	var pool: Array[Dictionary] = []
@@ -188,14 +216,26 @@ func _pick_template(exclude_customer: String = "", allow_phone: bool = true) -> 
 			continue
 		if not Game.is_recipe_unlocked(str(t["recipe_id"])):
 			continue
+=======
+func _pick_template() -> Dictionary:
+	var pool: Array[Dictionary] = []
+	for t in GameData.order_templates:
+		if t.get("tutorial", false):
+			if Game.orders_completed == 0:
+				return t
+			continue
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		if int(t.get("min_completed", 0)) <= Game.orders_completed:
 			pool.append(t)
 	if pool.is_empty():
 		return {}
+<<<<<<< HEAD
 	# o prato do dia aparece com o dobro de chance
 	for t in pool.duplicate():
 		if t["recipe_id"] == Game.daily_special:
 			pool.append(t)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	return pool[_rng.randi() % pool.size()]
 
 func _create_order(tpl: Dictionary) -> Order:
@@ -210,6 +250,7 @@ func _create_order(tpl: Dictionary) -> Order:
 	o.clue_ids.assign(tpl.get("clues", []))
 	o.hidden_clue_ids.assign(tpl.get("hidden_clues", []))
 	o.restrictions.assign(tpl.get("restrictions", []))
+<<<<<<< HEAD
 	for m in tpl.get("mods", []):
 		o.mods.append({"ingredient_id": str(m["ingredient_id"]), "percent": int(m["percent"])})
 	var recipe: Recipe = GameData.recipes[o.correct_recipe_id]
@@ -233,6 +274,10 @@ func _create_followup(fu: Dictionary, customer: String, channel: String) -> Orde
 		"clues": fu.get("clues", []), "hidden_clues": fu.get("hidden_clues", [])}
 	var o := _create_order(tpl)
 	o.channel = channel
+=======
+	var recipe: Recipe = GameData.recipes[o.correct_recipe_id]
+	o.base_reward_cents = recipe.price_per_serving_cents * o.servings
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	return o
 
 func cancel_order() -> void:
@@ -255,8 +300,11 @@ func open_investigation() -> void:
 	go(GameStates.Id.INVESTIGATION)
 
 func reveal_hint() -> void:
+<<<<<<< HEAD
 	if order != null and order.state == Order.State.CREATED:
 		order.transition(Order.State.INVESTIGATING)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	if order == null or order.state != Order.State.INVESTIGATING:
 		return
 	if order.hints_used >= order.hidden_clue_ids.size():
@@ -266,12 +314,15 @@ func reveal_hint() -> void:
 	order_changed.emit()
 	say("Pista extra revelada (penalidade no pagamento).")
 
+<<<<<<< HEAD
 ## O jogador escolhe a receita pelo nome (no balão do cliente), depois de consultar o livro.
 func choose_recipe(recipe_id: String) -> bool:
 	if order != null and order.state == Order.State.CREATED:
 		order.transition(Order.State.INVESTIGATING)
 	return select_recipe(recipe_id)
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func select_recipe(recipe_id: String) -> bool:
 	if order == null or order.state != Order.State.INVESTIGATING:
 		return false
@@ -291,6 +342,7 @@ func select_recipe(recipe_id: String) -> bool:
 
 func _build_adjusted() -> void:
 	var recipe: Recipe = GameData.recipes[order.selected_recipe_id]
+<<<<<<< HEAD
 	adjusted = AdjustedRecipe.build(recipe, order.servings, Game.recovered, order.mods, order.restrictions)
 	challenge_queue.clear()
 	var usable: Array[Dictionary] = []   # ingredientes que serão usados (não removidos pelo cliente)
@@ -313,6 +365,23 @@ func _build_adjusted() -> void:
 		challenge_queue.append({"kind": "capacity", "ingredient_id": pick["ingredient_id"]})
 	if tier >= 3:
 		var pick2: Dictionary = usable[_rng.randi() % usable.size()]
+=======
+	adjusted = AdjustedRecipe.build(recipe, order.servings, Game.recovered)
+	challenge_queue.clear()
+	for line in recipe.lines:
+		if not Game.is_line_known(recipe, line):
+			challenge_queue.append({"kind": "recover", "ingredient_id": line["ingredient_id"]})
+	if order.servings != recipe.base_servings:
+		for line in recipe.lines:
+			challenge_queue.append({"kind": "scale", "ingredient_id": line["ingredient_id"]})
+	# Desafios extras conforme o nível (um ingrediente sorteado da receita).
+	var tier := current_tier()
+	if tier >= 2:
+		var pick: Dictionary = recipe.lines[_rng.randi() % recipe.lines.size()]
+		challenge_queue.append({"kind": "capacity", "ingredient_id": pick["ingredient_id"]})
+	if tier >= 3:
+		var pick2: Dictionary = recipe.lines[_rng.randi() % recipe.lines.size()]
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		challenge_queue.append({"kind": "cost", "ingredient_id": pick2["ingredient_id"]})
 
 func is_ready_to_cook() -> bool:
@@ -321,7 +390,10 @@ func is_ready_to_cook() -> bool:
 
 # ----------------------------------------------------------------------- desafios
 func begin_challenge(ch: MathChallenge, context: String) -> void:
+<<<<<<< HEAD
 	ChoiceMaker.prepare(ch, _rng)   # toda questão vira 4 alternativas (A, B, C, D)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	current_challenge = ch
 	challenge_context = context
 	go(GameStates.Id.MATH_CHALLENGE)
@@ -339,16 +411,23 @@ func next_order_challenge() -> bool:
 	match spec["kind"]:
 		"recover":
 			ch = GameData.make_recovery_challenge(recipe, ing_id)
+<<<<<<< HEAD
 		"scale_mod":
 			ch = ChallengeFactory.scaling_mod(ing, line["unit"], Game.get_known_amount(recipe, line),
 				recipe.base_servings, order.servings, order.mod_percent(ing_id))
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"capacity":
 			ch = ChallengeFactory.capacity(_rng, ing, line["unit"],
 				Game.get_known_amount(recipe, line), recipe.base_servings)
 		"cost":
 			var needed := 0
 			for al in adjusted.lines:
+<<<<<<< HEAD
 				if al.get("original_id", al["ingredient_id"]) == ing_id:
+=======
+				if al["ingredient_id"] == ing_id:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 					needed = int(al["base_needed"])
 			ch = ChallengeFactory.order_cost(ing, needed, order.servings)
 		_:
@@ -391,23 +470,33 @@ func _apply_consequence(c: Dictionary) -> void:
 		"recover_line":
 			Game.recover_line(c["recipe_id"], c["ingredient_id"], float(c["amount"]))
 			if adjusted != null and order != null:
+<<<<<<< HEAD
 				adjusted = AdjustedRecipe.build(GameData.recipes[adjusted.recipe_id], order.servings, Game.recovered, order.mods, order.restrictions)
+=======
+				adjusted = AdjustedRecipe.build(GameData.recipes[adjusted.recipe_id], order.servings, Game.recovered)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"scale_line":
 			pass   # a fila de desafios já controla o avanço
 		"delivery_step":
 			delivery_steps_done[c["step"]] = true
+<<<<<<< HEAD
 			if c.has("cents"):
 				delivery_freight_cents = int(c["cents"])   # frete da entrega por telefone
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"purchase_discount":
 			Game.next_purchase_discount_percent = float(c.get("percent", 0.0))
 		"management_bonus":
 			Game.add_money(int(c["cents"]), "Bônus de gestão")
 			Game.add_score(int(c["points"]), "Desafio de gestão")
 			Game.daily_challenge_done = true
+<<<<<<< HEAD
 		"news_bonus":
 			Game.add_money(int(c["cents"]), "Bônus do jornal")
 			Game.add_score(int(c["points"]), "Desafio do jornal")
 			Game.news_done = true
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 ## Chamado pelo botão Continuar/Voltar da tela de desafio.
 func leave_challenge() -> void:
@@ -426,8 +515,11 @@ func leave_challenge() -> void:
 			go(GameStates.Id.ADMINISTRATION)
 		"daily":
 			go(GameStates.Id.DAY_SUMMARY)
+<<<<<<< HEAD
 		"news":
 			go(GameStates.Id.NEWSPAPER)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		_:
 			go(GameStates.Id.RESTAURANT)
 
@@ -436,24 +528,36 @@ func start_preparation() -> bool:
 	if not is_ready_to_cook():
 		say("Resolva os desafios da receita antes de cozinhar.")
 		return false
+<<<<<<< HEAD
 	var to_use := portion_adjusted()
 	var check := Game.has_ingredients(to_use)
 	if not check["ok"]:
 		say(_missing_text(check["missing"]))
 		return false
 	if not Game.consume_ingredients(to_use):   # consumo único dos ingredientes (com a porção escolhida)
+=======
+	var check := Game.has_ingredients(adjusted)
+	if not check["ok"]:
+		say(_missing_text(check["missing"]))
+		return false
+	if not Game.consume_ingredients(adjusted):   # consumo único dos ingredientes
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		return false
 	order.transition(Order.State.PREPARING)
 	var recipe: Recipe = GameData.recipes[adjusted.recipe_id]
 	dish = Dish.new(recipe.id, order.servings, recipe.steps)
 	dish.ingredients_consumed = true
 	dish.start()
+<<<<<<< HEAD
 	heat_minutes = 20
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	order_changed.emit()
 	dish_changed.emit()
 	go(GameStates.Id.KITCHEN)
 	return true
 
+<<<<<<< HEAD
 ## Porção econômica (−20%), normal ou generosa (+20%): muda o gasto e a felicidade do cliente.
 func set_portion(style: String) -> void:
 	if order == null or not PORTION_FACTORS.has(style) or order.state != Order.State.IDENTIFIED:
@@ -574,6 +678,10 @@ func do_prep_step() -> void:
 		say("Arraste os ingredientes certos da bancada (ou clique neles).")
 		return
 	if dish == null or is_heat_step() or not dish.advance():
+=======
+func do_prep_step() -> void:
+	if dish == null or not dish.advance():
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		return
 	if dish.state == Dish.State.READY:
 		say("Prato pronto!")
@@ -591,6 +699,7 @@ func start_delivery() -> bool:
 	if dish == null or dish.state != Dish.State.READY:
 		say("O prato ainda não está pronto.")
 		return false
+<<<<<<< HEAD
 	if _delivery_order_id != order.id:
 		delivery_steps_done.clear()
 		_delivery_order_id = order.id
@@ -678,11 +787,35 @@ func _stars_for(sat: int) -> int:
 
 ## Pagamento = preço-base + melhorias/reputação + prato do dia + gorjeta − reembolso
 ## (calculado uma única vez por pedido).
+=======
+	delivery_steps_done.clear()
+	delivery_bill_cents = order.base_reward_cents
+	go(GameStates.Id.DELIVERY)
+	return true
+
+func delivery_next_label() -> String:
+	if not delivery_steps_done.has("portion"):
+		return "Dividir o prato em porções (desafio)"
+	if not delivery_steps_done.has("change"):
+		return "Receber o pagamento e dar o troco (desafio)"
+	return "Entregar o prato"
+
+func delivery_next() -> void:
+	if not delivery_steps_done.has("portion"):
+		begin_challenge(ChallengeFactory.fraction_portion(_rng, current_tier()), "delivery")
+	elif not delivery_steps_done.has("change"):
+		begin_challenge(ChallengeFactory.change(_rng, delivery_bill_cents, current_tier()), "delivery")
+	else:
+		finalize_delivery()
+
+## Pagamento = preço-base + bônus − penalidades (calculado uma única vez por pedido).
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func finalize_delivery() -> void:
 	if order == null or dish == null or dish.state != Dish.State.READY:
 		return
 	if order.paid:
 		return
+<<<<<<< HEAD
 	if _next_delivery_step() != "":
 		return
 	var correct := dish.recipe_id == order.correct_recipe_id and dish.servings == order.servings
@@ -703,11 +836,25 @@ func finalize_delivery() -> void:
 	var refund := maxi(-tip_value, 0)
 	var freight := delivery_freight_cents if order.is_phone() else 0
 	var total := maxi(0, base + upgrade_bonus + special_bonus + tip - refund) + freight
+=======
+	if not (delivery_steps_done.has("portion") and delivery_steps_done.has("change")):
+		return
+	var correct := dish.recipe_id == order.correct_recipe_id and dish.servings == order.servings
+	var base := order.base_reward_cents if correct else 0
+	var upgrade_bonus := roundi(base * Game.get_effect_total("price_bonus_percent") / 100.0)
+	var perfect := order.mistakes == 0 and order.hints_used == 0
+	var bonus := roundi(base * BONUS_NO_MISTAKE_PERCENT / 100.0) if perfect else 0
+	var penalty_pct := minf(order.mistakes * PENALTY_MISTAKE_PERCENT + order.hints_used * PENALTY_HINT_PERCENT,
+		MAX_PENALTY_PERCENT)
+	var penalty := roundi(base * penalty_pct / 100.0)
+	var total := maxi(0, base + upgrade_bonus + bonus - penalty)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 	order.paid = true
 	Game.add_money(total, "Pedido #%d (%s)" % [order.id, order.customer_name])
 	dish.state = Dish.State.DELIVERED
 	order.transition(Order.State.COMPLETED)
+<<<<<<< HEAD
 	var points := 100 + 20 * current_tier() + 15 * stars
 	Game.add_score(points, "Pedido concluído")
 	Game.add_rating(stars)
@@ -737,6 +884,18 @@ func finalize_delivery() -> void:
 		"mistakes": order.mistakes, "hints": order.hints_used, "story": story,
 		"freight": freight, "patience": int(roundf(order.patience)) if order.patience_sec > 0.0 and Settings.patience_enabled else -1,
 		"portion": order.portion_style,
+=======
+	var points := 100 + 20 * current_tier() + (50 if perfect else 0)
+	Game.add_score(points, "Pedido concluído")
+	Game.orders_completed += 1
+	Game.orders_today += 1
+	var story := _on_progress()
+
+	last_result = {
+		"customer": order.customer_name,
+		"base": base, "upgrade_bonus": upgrade_bonus, "bonus": bonus, "penalty": penalty,
+		"total": total, "points": points, "mistakes": order.mistakes, "hints": order.hints_used, "story": story,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	}
 	dish = null
 	adjusted = null
@@ -752,6 +911,7 @@ func _on_progress() -> String:
 
 func continue_after_result() -> void:
 	if Game.orders_completed >= WIN_ORDERS:
+<<<<<<< HEAD
 		ending_kind = "vitoria"
 		new_record = Game.register_final_score()
 		SaveSystem.delete()   # partida terminada: o save deixa de existir
@@ -853,6 +1013,21 @@ func chapter_goal_status() -> String:
 		"reputation":
 			progress = " (agora: %s)" % ("%.1f" % Game.reputation).replace(".", ",")
 	return "%s — Meta: %s%s" % [ch["title"], ch["goal_text"], progress]
+=======
+		new_record = Game.register_final_score()
+		SaveSystem.delete()   # partida terminada: o save deixa de existir
+		go(GameStates.Id.ENDING)
+	elif Game.orders_today >= ORDERS_PER_DAY:
+		go(GameStates.Id.DAY_SUMMARY)
+	else:
+		go(GameStates.Id.RESTAURANT)
+
+func start_next_day() -> void:
+	Game.start_next_day()
+	go(GameStates.Id.RESTAURANT)
+	SaveSystem.save()   # salvamento automático no início de cada dia
+	say("O dia %d começou! (jogo salvo automaticamente)" % Game.day)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 # =============================================================== navegação / menus
 ## Vai para uma página do restaurante (Salão, Cozinha ou Despensa).
@@ -894,7 +1069,11 @@ func _effective_state() -> int:
 func can_save() -> bool:
 	var s := _effective_state()
 	return not (s in [GameStates.Id.MAIN_MENU, GameStates.Id.INTRO, GameStates.Id.CREDITS,
+<<<<<<< HEAD
 		GameStates.Id.ENDING, GameStates.Id.MATH_CHALLENGE])   # o jornal pode ser salvo
+=======
+		GameStates.Id.ENDING, GameStates.Id.MATH_CHALLENGE])
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func save_now() -> bool:
 	if not can_save():
@@ -922,10 +1101,13 @@ func to_dict() -> Dictionary:
 		"delivery_bill": delivery_bill_cents,
 		"last_result": last_result,
 		"next_order_id": _next_order_id,
+<<<<<<< HEAD
 		"waiting": waiting.to_dict() if waiting != null else {},
 		"followup": followup_tpl,
 		"freight": delivery_freight_cents,
 		"last_rent": last_rent_cents,
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	}
 
 func from_dict(d: Dictionary) -> void:
@@ -949,6 +1131,7 @@ func from_dict(d: Dictionary) -> void:
 	delivery_bill_cents = int(d.get("delivery_bill", 0))
 	last_result = _clean_result(d.get("last_result", {}))
 	_next_order_id = int(d.get("next_order_id", 1))
+<<<<<<< HEAD
 	waiting = null
 	var wd: Dictionary = d.get("waiting", {})
 	if not wd.is_empty():
@@ -962,6 +1145,10 @@ func from_dict(d: Dictionary) -> void:
 	if order != null and not delivery_steps_done.is_empty():
 		_delivery_order_id = order.id
 	heat_minutes = 20
+=======
+	if order != null and order.selected_recipe_id != "" and GameData.recipes.has(order.selected_recipe_id):
+		adjusted = AdjustedRecipe.build(GameData.recipes[order.selected_recipe_id], order.servings, Game.recovered)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	var target := _safe_state(int(d.get("state", GameStates.Id.RESTAURANT)))
 	return_state = GameStates.Id.RESTAURANT
 	go(target)
@@ -969,10 +1156,15 @@ func from_dict(d: Dictionary) -> void:
 func _clean_result(r: Dictionary) -> Dictionary:
 	if r.is_empty():
 		return {}
+<<<<<<< HEAD
 	var out := {"customer": str(r.get("customer", "")), "story": str(r.get("story", "")), "cook": str(r.get("cook", "")),
 		"portion": str(r.get("portion", "normal"))}
 	out["patience"] = int(r.get("patience", -1))
 	for k in ["base", "upgrade_bonus", "special_bonus", "tip", "refund", "total", "points", "stars", "satisfaction", "mistakes", "hints", "freight"]:
+=======
+	var out := {"customer": str(r.get("customer", "")), "story": str(r.get("story", ""))}
+	for k in ["base", "upgrade_bonus", "bonus", "penalty", "total", "points", "mistakes", "hints"]:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		out[k] = int(r.get(k, 0))
 	return out
 
@@ -988,6 +1180,10 @@ func _safe_state(s: int) -> GameStates.Id:
 			return GameStates.Id.ACTIVE_ORDER if has_order else GameStates.Id.RESTAURANT
 		GameStates.Id.RESULT:
 			return GameStates.Id.RESULT if not last_result.is_empty() else GameStates.Id.RESTAURANT
+<<<<<<< HEAD
 		GameStates.Id.KITCHEN, GameStates.Id.ADMINISTRATION, GameStates.Id.DAY_SUMMARY, GameStates.Id.RESTAURANT, GameStates.Id.NEWSPAPER:
+=======
+		GameStates.Id.KITCHEN, GameStates.Id.ADMINISTRATION, GameStates.Id.DAY_SUMMARY, GameStates.Id.RESTAURANT:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 			return s as GameStates.Id
 	return GameStates.Id.RESTAURANT

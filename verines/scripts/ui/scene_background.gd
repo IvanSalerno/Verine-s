@@ -4,10 +4,15 @@ extends RefCounted
 ## a blocagem colorida continua aparecendo. Nós com o metadado "keep" (ex.: bloco do cliente,
 ## prato, barras de estoque) nunca são escondidos por aqui: o próprio script da página cuida deles.
 
+<<<<<<< HEAD
 ## As páginas ocupam a tela toda, em qualquer proporção de monitor. Imagens ideais: 1920×1080
 ## (16:9) com o assunto principal no lado direito; os elementos da blocagem ficam no nó "Palco",
 ## uma área de 1280×720 presa ao canto inferior direito.
 ## A imagem cobre a tela mantendo a proporção; o que sobrar nas bordas é cortado.
+=======
+const IMAGE_HEIGHT := 280.0   # altura da página quando há imagem
+const BLOCK_HEIGHT := 230.0   # altura da página com a blocagem
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 ## Cria a camada de imagem atrás dos blocos. Começa invisível.
 static func create_layer(view: Control) -> TextureRect:
@@ -18,7 +23,11 @@ static func create_layer(view: Control) -> TextureRect:
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bg.visible = false
 	view.add_child(bg)
+<<<<<<< HEAD
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+=======
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	view.move_child(bg, 0)
 	return bg
 
@@ -42,6 +51,7 @@ static func first_of(textures: Array) -> Texture2D:
 static func show_image(view: Control, bg: TextureRect, tex: Texture2D) -> bool:
 	bg.texture = tex
 	bg.visible = tex != null
+<<<<<<< HEAD
 	_toggle_blocks(view, tex == null)
 	return tex != null
 
@@ -52,6 +62,13 @@ static func _toggle_blocks(node: Node, show_blocks: bool) -> void:
 			child.visible = show_blocks
 		elif child.name == "Palco":
 			_toggle_blocks(child, show_blocks)
+=======
+	view.custom_minimum_size.y = IMAGE_HEIGHT if tex != null else BLOCK_HEIGHT
+	for child in view.get_children():
+		if child is ColorRect and not child.has_meta("keep"):
+			child.visible = (tex == null)
+	return tex != null
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 ## Deixa um texto legível sobre qualquer imagem (branco com contorno preto).
 static func style_label_for_art(label: Label) -> void:

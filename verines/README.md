@@ -8,7 +8,11 @@
 - Autoloads (ordem importa): `GameData` (catálogo) → `Game` (dinheiro, estoque, melhorias) → `Flow` (estados e regras do atendimento).
 - `scripts/core`: Units, Money (centavos), AnswerValidator, ChallengeFactory, GameStates.
 - `scripts/data`: Ingredient, Recipe (dados originais), AdjustedRecipe (ajuste por pedido), Clue, Order, Dish, Upgrade, MathChallenge.
+<<<<<<< HEAD
 - `scripts/ui/main.gd`: toda a interface por código, só mouse (desafios com 4 alternativas A–D).
+=======
+- `scripts/ui/main.gd`: toda a interface por código, só mouse (teclado numérico na tela).
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 ## Para a equipe definir
 Catálogo definitivo, balanceamento (valores em `Flow`), história/desfecho, tempo e pedidos simultâneos (v2).
@@ -48,6 +52,7 @@ Se o arquivo existir, ele vira o fundo da página e os blocos coloridos somem. S
 - `fogao.png`: etapas com fogo (assar, cozinhar, fritar, aquecer, calda)
 - `livro_receitas.png` (ou `livro de receitas.png`): fundo do menu inicial
 - `despensa.png`: opcional (sem ela, a Despensa usa blocos)
+<<<<<<< HEAD
 
 ## Clientes (v13, base v8)
 Arquivos `cliente_<nome>.png` (vermelho, azul, amarelo, careca, alto, oculos, cracha), em `assets/clientes/`
@@ -207,3 +212,5 @@ Os 24 pedidos foram distribuídos entre eles (`GameData`); a ligação nome → 
   (mais `pizza` e `hamburguer`). `Recipe.side_dish` indica pratos desenhados de lado.
 - Scripts: `tools/draw_ingredient_sprites.py` e `tools/draw_dish_sprites.py` desenham; `stylize_assets.py`
   aplica o estilo. Todos os 16 ingredientes e 7 pratos agora têm imagem.
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d

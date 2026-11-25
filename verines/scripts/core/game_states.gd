@@ -18,7 +18,10 @@ enum Id {
 	SETTINGS,
 	CREDITS,
 	ENDING,
+<<<<<<< HEAD
 	NEWSPAPER,   # jornal do dia (rival, evento do dia, capítulo) — sempre no fim do enum (saves)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 }
 
 ## Páginas do restaurante, com visão e navegação próprias.
@@ -27,7 +30,11 @@ enum Place { SALAO, COZINHA, DESPENSA }
 ## Lugar ao qual o estado pertence (-1 = nenhum).
 static func place_of(s: int) -> int:
 	match s:
+<<<<<<< HEAD
 		Id.RESTAURANT, Id.ACTIVE_ORDER, Id.INVESTIGATION, Id.DELIVERY, Id.RESULT, Id.DAY_SUMMARY, Id.NEWSPAPER:
+=======
+		Id.RESTAURANT, Id.ACTIVE_ORDER, Id.INVESTIGATION, Id.DELIVERY, Id.RESULT, Id.DAY_SUMMARY:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 			return Place.SALAO
 		Id.KITCHEN:
 			return Place.COZINHA
@@ -37,4 +44,8 @@ static func place_of(s: int) -> int:
 
 ## A barra de navegação (Salão/Cozinha/Despensa) só aparece nestes estados.
 static func can_navigate(s: int) -> bool:
+<<<<<<< HEAD
 	return place_of(s) != -1 and not (s in [Id.RESULT, Id.DAY_SUMMARY, Id.NEWSPAPER])
+=======
+	return place_of(s) != -1 and not (s in [Id.RESULT, Id.DAY_SUMMARY])
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d

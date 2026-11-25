@@ -29,6 +29,7 @@ Flow="*res://scripts/autoload/flow.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+<<<<<<< HEAD
 window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
@@ -36,3 +37,6 @@ window/stretch/aspect="expand"
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.2, 0.14, 0.1, 1)
+=======
+window/stretch/mode="canvas_items"
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d

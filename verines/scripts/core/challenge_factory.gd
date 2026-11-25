@@ -36,6 +36,7 @@ static func scaling(ing: Ingredient, unit: Units.Unit, base_amount: float, base_
 	c.consequence = {"type": "scale_line", "ingredient_id": ing.id}
 	return c
 
+<<<<<<< HEAD
 ## Proporção + porcentagem: personalização pedida pelo cliente ("50% a mais de queijo"). (nível 2)
 static func scaling_mod(ing: Ingredient, unit: Units.Unit, base_amount: float, base_servings: int, servings: int, percent: int) -> MathChallenge:
 	var c := MathChallenge.new()
@@ -56,6 +57,8 @@ static func scaling_mod(ing: Ingredient, unit: Units.Unit, base_amount: float, b
 	c.consequence = {"type": "scale_line", "ingredient_id": ing.id}
 	return c
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 ## Capacidade de produção: quantas porções cabem num estoque. (nível 2+)
 static func capacity(rng: RandomNumberGenerator, ing: Ingredient, unit: Units.Unit, base_amount: float, base_servings: int) -> MathChallenge:
 	var per_serving := base_amount / float(base_servings)
@@ -104,7 +107,11 @@ static func fraction_portion(rng: RandomNumberGenerator, tier: int) -> MathChall
 	c.tier = tier
 	c.topic = "Frações"
 	c.type = MathChallenge.Type.FRACTION
+<<<<<<< HEAD
 	c.hint = "As alternativas aparecem simplificadas: 6/8 aparece como 3/4."
+=======
+	c.hint = "Frações equivalentes também valem (ex.: 6/8 = 3/4)."
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	c.success_feedback = "Correto! Prato dividido."
 	c.consequence = {"type": "delivery_step", "step": "portion"}
 	if tier <= 1:
@@ -234,7 +241,11 @@ static func unit_price_compare(rng: RandomNumberGenerator) -> MathChallenge:
 	var per100: Array = [120, 140, 160, 180, 200, 220, 240]   # centavos por 100 g
 	per100.shuffle()
 	var sizes := [250, 500, 1000]
+<<<<<<< HEAD
 	var letters := ["1", "2", "3"]   # números: as alternativas já usam as letras A–D
+=======
+	var letters := ["A", "B", "C"]
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	var c := MathChallenge.new()
 	c.id = "unit_price"
 	c.tier = 2
@@ -250,7 +261,10 @@ static func unit_price_compare(rng: RandomNumberGenerator) -> MathChallenge:
 		lines.append(text)
 		if per100[i] < per100[best]:
 			best = i
+<<<<<<< HEAD
 	c.choices.append("Os três têm o mesmo preço por grama")
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	c.statement = "O fornecedor vende o mesmo ingrediente em três pacotes:\n%s\nQual pacote tem o MENOR preço por grama?" % "\n".join(lines)
 	c.expected = best
 	c.hint = "Calcule o preço de 100 g de cada pacote (preço ÷ gramas × 100) e compare."
@@ -340,6 +354,7 @@ static func matrix_product(rng: RandomNumberGenerator) -> MathChallenge:
 	c.hint = "Cada elemento = soma de (quantidade da linha × preço da coluna). Ex.: elemento 1 = linha 1 de Q × coluna 1 de P."
 	_reward_discount(c, 20.0)
 	return c
+<<<<<<< HEAD
 
 # ============================================================ ENTREGA POR TELEFONE (v20)
 const BLOCK_METERS := 200          # cada quadra tem 200 m
@@ -446,3 +461,5 @@ static func news(rng: RandomNumberGenerator, tier: int, values: Array, rival_nam
 	c.consequence = {"type": "news_bonus", "cents": cents, "points": points}
 	c.success_feedback = "Leitura atenta! Bônus de %s e +%d pontos." % [Money.format(cents), points]
 	return c
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d

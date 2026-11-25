@@ -14,10 +14,13 @@ const HELP_THRESHOLD := 2000   # só pede ajuda com menos de R$ 20,00
 const HELP_AMOUNT := 3000      # ajuda do vizinho: R$ 30,00
 const HELP_MAX_USES := 3
 const SAVE_PATH := "user://verines.cfg"
+<<<<<<< HEAD
 ## Contas do restaurante (cobradas ao fechar o dia). Sobem a cada capítulo.
 const RENT_CENTS := 1200          # R$ 12,00 por dia no capítulo 1
 const RENT_PER_CHAPTER := 300     # +R$ 3,00 por capítulo
 const BANKRUPT_DAYS := 3          # dias seguidos com saldo negativo = falência
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 var money_cents: int = 0
 var inventory: Dictionary = {}                 # ingredient_id -> int (unidade base)
@@ -30,8 +33,11 @@ var total_income: int = 0
 var total_expenses: int = 0
 var next_purchase_discount_percent: float = 0.0
 var help_uses: int = 0
+<<<<<<< HEAD
 var reputation: float = 3.0       # 1 a 5 estrelas (média móvel das avaliações)
 var daily_special: String = ""    # prato do dia (id da receita)
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 var score: int = 0
 var best_score: int = 0
 var day: int = 1
@@ -40,6 +46,7 @@ var daily_challenge_done: bool = false
 var day_history: Array[Dictionary] = []        # {day, income, expenses, profit, orders}
 var _day_income_start: int = 0
 var _day_expenses_start: int = 0
+<<<<<<< HEAD
 # ---- backlog (v20)
 var days_in_red: int = 0          # dias seguidos fechados com saldo negativo
 var bills_paid_today: bool = false
@@ -49,6 +56,8 @@ var news_done: bool = false       # desafio do jornal de hoje já resolvido
 var chapter_seen: int = -1        # último capítulo anunciado
 var chapter_progress: int = 0     # progresso da meta do capítulo atual (ex.: clientes 3★)
 var chapters_done: Array[int] = []
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _ready() -> void:
 	var cfg := ConfigFile.new()
@@ -67,7 +76,10 @@ func new_game() -> void:
 	total_expenses = 0
 	next_purchase_discount_percent = 0.0
 	help_uses = 0
+<<<<<<< HEAD
 	reputation = 3.0
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	score = 0
 	day = 1
 	orders_today = 0
@@ -75,6 +87,7 @@ func new_game() -> void:
 	day_history.clear()
 	_day_income_start = 0
 	_day_expenses_start = 0
+<<<<<<< HEAD
 	days_in_red = 0
 	bills_paid_today = false
 	today_event = "normal"
@@ -93,6 +106,10 @@ func new_game() -> void:
 	inventory["tomate"] = 250
 	inventory["queijo"] = 200      # o primeiro pedido (hambúrguer) usa queijo
 	inventory["queijo_ralado"] = 300
+=======
+	for id in GameData.ingredients:
+		inventory[id] = 0
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	inventory["farinha"] = 1000
 	inventory["ovo"] = 6
 	inventory["leite"] = 1000
@@ -101,7 +118,10 @@ func new_game() -> void:
 		var r: Recipe = GameData.recipes[rid]
 		if r.unlocked_by_default:
 			unlocked_recipes.append(rid)
+<<<<<<< HEAD
 	roll_daily_special()
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	money_changed.emit(money_cents)
 	inventory_changed.emit()
 	score_changed.emit(score)
@@ -144,6 +164,7 @@ func add_score(points: int, _reason: String = "") -> void:
 	score += points
 	score_changed.emit(score)
 
+<<<<<<< HEAD
 ## Registra a avaliação (1 a 5 estrelas) de um cliente e atualiza a reputação.
 func add_rating(stars: int) -> void:
 	var weight := float(event_effect("rating_weight", 1.0))   # crítico gastronômico: conta em dobro
@@ -157,12 +178,15 @@ func roll_daily_special() -> void:
 	else:
 		daily_special = unlocked_recipes[randi() % unlocked_recipes.size()]
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func day_income() -> int:
 	return total_income - _day_income_start
 
 func day_expenses() -> int:
 	return total_expenses - _day_expenses_start
 
+<<<<<<< HEAD
 # ------------------------------------------------- contas, falência, eventos, rival
 ## Aluguel e contas do dia (aumenta a cada capítulo).
 func rent_today() -> int:
@@ -196,10 +220,13 @@ func roll_rival_day() -> Dictionary:
 	rival_history.append(e)
 	return e
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 ## Fecha o dia atual (guarda no histórico) e começa o próximo.
 func start_next_day() -> void:
 	var inc := day_income()
 	var exp := day_expenses()
+<<<<<<< HEAD
 	var rival := roll_rival_day()
 	day_history.append({"day": day, "income": inc, "expenses": exp, "profit": inc - exp, "orders": orders_today,
 		"rival_orders": int(rival["orders"])})
@@ -210,6 +237,12 @@ func start_next_day() -> void:
 	bills_paid_today = false
 	news_done = false
 	roll_daily_special()
+=======
+	day_history.append({"day": day, "income": inc, "expenses": exp, "profit": inc - exp, "orders": orders_today})
+	day += 1
+	orders_today = 0
+	daily_challenge_done = false
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_day_income_start = total_income
 	_day_expenses_start = total_expenses
 	day_changed.emit(day)
@@ -244,8 +277,12 @@ func needs_restock(ingredient_id: String) -> bool:
 func purchase_price(ingredient_id: String, packs: int) -> int:
 	var ing: Ingredient = GameData.ingredients[ingredient_id]
 	var base := ing.pack_cost_cents * packs
+<<<<<<< HEAD
 	var discount := get_effect_total("purchase_discount_percent") + next_purchase_discount_percent \
 		+ float(event_effect("buy_discount", 0.0))
+=======
+	var discount := get_effect_total("purchase_discount_percent") + next_purchase_discount_percent
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	return roundi(base * (1.0 - minf(discount, 90.0) / 100.0))
 
 func buy_ingredient(ingredient_id: String, packs: int) -> Dictionary:
@@ -358,8 +395,11 @@ func to_dict() -> Dictionary:
 		"total_expenses": total_expenses,
 		"next_purchase_discount_percent": next_purchase_discount_percent,
 		"help_uses": help_uses,
+<<<<<<< HEAD
 		"reputation": reputation,
 		"daily_special": daily_special,
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		"score": score,
 		"day": day,
 		"orders_today": orders_today,
@@ -367,9 +407,12 @@ func to_dict() -> Dictionary:
 		"day_history": day_history,
 		"day_income_start": _day_income_start,
 		"day_expenses_start": _day_expenses_start,
+<<<<<<< HEAD
 		"days_in_red": days_in_red, "bills_paid_today": bills_paid_today, "today_event": today_event,
 		"rival_history": rival_history, "news_done": news_done, "chapter_seen": chapter_seen,
 		"chapter_progress": chapter_progress, "chapters_done": chapters_done,
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	}
 
 func from_dict(d: Dictionary) -> void:
@@ -399,10 +442,13 @@ func from_dict(d: Dictionary) -> void:
 	total_expenses = int(d.get("total_expenses", 0))
 	next_purchase_discount_percent = float(d.get("next_purchase_discount_percent", 0.0))
 	help_uses = int(d.get("help_uses", 0))
+<<<<<<< HEAD
 	reputation = float(d.get("reputation", 3.0))
 	var saved_special := str(d.get("daily_special", ""))
 	if GameData.recipes.has(saved_special):
 		daily_special = saved_special
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	score = int(d.get("score", 0))
 	day = int(d.get("day", 1))
 	orders_today = int(d.get("orders_today", 0))
@@ -410,6 +456,7 @@ func from_dict(d: Dictionary) -> void:
 	day_history.clear()
 	for h in d.get("day_history", []):
 		day_history.append({"day": int(h["day"]), "income": int(h["income"]),
+<<<<<<< HEAD
 			"expenses": int(h["expenses"]), "profit": int(h["profit"]), "orders": int(h["orders"]),
 			"rival_orders": int(h.get("rival_orders", 0))})
 	_day_income_start = int(d.get("day_income_start", 0))
@@ -429,6 +476,11 @@ func from_dict(d: Dictionary) -> void:
 	chapters_done.clear()
 	for c in d.get("chapters_done", []):
 		chapters_done.append(int(c))
+=======
+			"expenses": int(h["expenses"]), "profit": int(h["profit"]), "orders": int(h["orders"])})
+	_day_income_start = int(d.get("day_income_start", 0))
+	_day_expenses_start = int(d.get("day_expenses_start", 0))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	money_changed.emit(money_cents)
 	inventory_changed.emit()
 	score_changed.emit(score)

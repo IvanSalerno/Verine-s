@@ -8,40 +8,64 @@ const TEXT_SIZES: Array[int] = [16, 18, 22]
 const TEXT_SIZE_NAMES: Array[String] = ["Pequeno", "Médio", "Grande"]
 
 var volume_steps: int = 8      # 0 a 10
+<<<<<<< HEAD
 var fullscreen: bool = true   # o jogo abre em tela cheia
 var show_hints: bool = true
 var text_size: int = 1         # índice em TEXT_SIZES
 var patience_enabled: bool = true   # paciência dos clientes (tempo)
+=======
+var fullscreen: bool = false
+var show_hints: bool = true
+var text_size: int = 1         # índice em TEXT_SIZES
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _ready() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(PATH) == OK:
 		volume_steps = clampi(int(cfg.get_value("settings", "volume", 8)), 0, 10)
+<<<<<<< HEAD
 		fullscreen = bool(cfg.get_value("settings", "fullscreen_v2", true))   # chave nova: ignora o "desligado" antigo
 		show_hints = bool(cfg.get_value("settings", "hints", true))
 		text_size = clampi(int(cfg.get_value("settings", "text_size", 1)), 0, 2)
 		patience_enabled = bool(cfg.get_value("settings", "patience", true))
+=======
+		fullscreen = bool(cfg.get_value("settings", "fullscreen", false))
+		show_hints = bool(cfg.get_value("settings", "hints", true))
+		text_size = clampi(int(cfg.get_value("settings", "text_size", 1)), 0, 2)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	apply()
 
 func apply() -> void:
 	AudioServer.set_bus_mute(0, volume_steps == 0)
 	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(volume_steps / 10.0, 0.0001)))
+<<<<<<< HEAD
 	# só troca o modo da janela quando precisa (não "desmaximiza" ao mudar o volume, por exemplo)
 	var mode := DisplayServer.window_get_mode()
 	var is_full := mode == DisplayServer.WINDOW_MODE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 	if fullscreen and not is_full:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	elif not fullscreen and is_full:
+=======
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	changed.emit()
 
 func _save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("settings", "volume", volume_steps)
+<<<<<<< HEAD
 	cfg.set_value("settings", "fullscreen_v2", fullscreen)
 	cfg.set_value("settings", "hints", show_hints)
 	cfg.set_value("settings", "text_size", text_size)
 	cfg.set_value("settings", "patience", patience_enabled)
+=======
+	cfg.set_value("settings", "fullscreen", fullscreen)
+	cfg.set_value("settings", "hints", show_hints)
+	cfg.set_value("settings", "text_size", text_size)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	cfg.save(PATH)
 
 func change_volume(delta: int) -> void:
@@ -59,11 +83,14 @@ func toggle_hints() -> void:
 	_save()
 	apply()
 
+<<<<<<< HEAD
 func toggle_patience() -> void:
 	patience_enabled = not patience_enabled
 	_save()
 	apply()
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func set_text_size(index: int) -> void:
 	text_size = clampi(index, 0, 2)
 	_save()

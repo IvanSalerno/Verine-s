@@ -16,6 +16,7 @@ var challenge_ids: Array[String] = []      # desafios de recuperação de dados
 ## Cada linha: {ingredient_id: String, amount: float, unit: Units.Unit, hidden: bool}
 ## hidden = true -> dado deteriorado/ilegível; "amount" guarda o valor verdadeiro.
 var lines: Array[Dictionary] = []
+<<<<<<< HEAD
 ## Etapa com fogo/forno (cozimento cronometrado). Tempo ideal em minutos = base + por_porção × porções
 ## (função do 1º grau; o jogador calcula e ajusta o timer na cozinha).
 var heat_step: int = -1         # índice da etapa (-1 = nenhuma)
@@ -44,6 +45,8 @@ func has_heat() -> bool:
 
 func heat_minutes_for(servings: int) -> int:
 	return heat_base + heat_per_serving * servings
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func add_line(ingredient_id: String, amount: float, unit: Units.Unit, hidden: bool = false) -> Recipe:
 	lines.append({

@@ -1,4 +1,5 @@
 extends Control
+<<<<<<< HEAD
 ## Interface do jogo. Controle EXCLUSIVAMENTE por mouse (desafios com 4 alternativas, A–D).
 ## O restaurante tem 3 páginas (Salão, Cozinha e Despensa), cada uma com sua cena visual.
 
@@ -11,6 +12,15 @@ const CENTER_STATES := [
 const SIDE_CARD_WIDTH := 540.0     # balão lateral (a cena aparece de x ≈ 570 em diante)
 const CENTER_CARD_WIDTH := 800.0
 const NOTICE_SECONDS := 5.0
+=======
+## Interface do jogo. Controle EXCLUSIVAMENTE por mouse (teclado numérico na tela).
+## O restaurante tem 3 páginas (Salão, Cozinha e Despensa), cada uma com sua cena visual.
+
+const HIDE_VIEW_STATES := [
+	GameStates.Id.MAIN_MENU, GameStates.Id.INTRO, GameStates.Id.CREDITS, GameStates.Id.SETTINGS,
+	GameStates.Id.ENDING, GameStates.Id.MATH_CHALLENGE, GameStates.Id.RECIPE_BOOK,
+]
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 const MENU_BG_PATHS: Array[String] = [
 	"res://assets/cenarios/livro_receitas.png",
 	"res://assets/cenarios/livro de receitas.png",
@@ -29,6 +39,7 @@ var _nav: HBoxContainer
 var _nav_buttons: Array[Button] = []
 var _views: Array[Control] = []
 var _last_place: int = 0
+<<<<<<< HEAD
 var _body: HBoxContainer
 var _card: PanelContainer
 var _scroll: ScrollContainer
@@ -37,6 +48,9 @@ var _toast: PanelContainer
 var _toast_timer: Timer
 var _menu_overlay: PanelContainer
 var _intro: IntroStory
+=======
+var _menu_overlay: PanelContainer
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 var _menu_button: Button
 var _book_button: Button
 var _money_label: Label
@@ -47,6 +61,7 @@ var _msg_label: Label
 var _confirm_exit: bool = false
 var _confirm_delete: bool = false
 
+<<<<<<< HEAD
 # Estado da tela de desafio (4 alternativas A–D, sem teclado)
 const CHOICE_BG := Color(0.96, 0.94, 0.89)
 const CHOICE_HOVER := Color(1.0, 0.9, 0.72)
@@ -62,6 +77,20 @@ var _continue_button: Button
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+=======
+# Estado da tela de desafio
+var _answer: String = ""
+var _selected_choice: int = -1
+var _answer_label: Label
+var _hint_label: Label
+var _feedback_label: Label
+var _submit_button: Button
+var _continue_button: Button
+var _keypad: GridContainer
+
+func _ready() -> void:
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_build_layout()
 	Flow.state_changed.connect(_on_state_changed)
 	Flow.order_changed.connect(_refresh)
@@ -76,6 +105,7 @@ func _ready() -> void:
 	_on_state_changed(Flow.state)
 
 func _apply_settings() -> void:
+<<<<<<< HEAD
 	theme = UIStyle.build_theme(Settings.TEXT_SIZES[Settings.text_size])
 	if Flow.state == GameStates.Id.SETTINGS:
 		_refresh()
@@ -92,17 +122,33 @@ func _build_layout() -> void:
 	base.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	# fundo do menu inicial (livro de receitas), escurecido para leitura
+=======
+	var t := Theme.new()
+	t.default_font_size = Settings.TEXT_SIZES[Settings.text_size]
+	theme = t
+	if Flow.state == GameStates.Id.SETTINGS:
+		_refresh()
+
+# ============================================================== layout / helpers
+func _build_layout() -> void:
+	# fundo do menu inicial (livro de receitas), atrás de tudo e escurecido para leitura
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_menu_bg = TextureRect.new()
 	_menu_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_menu_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_menu_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_menu_bg.visible = false
 	add_child(_menu_bg)
+<<<<<<< HEAD
 	_menu_bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+=======
+	_menu_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	var dim := ColorRect.new()
 	dim.color = Color(0, 0, 0, 0.5)
 	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_menu_bg.add_child(dim)
+<<<<<<< HEAD
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_menu_tex = SceneBackground.load_first(MENU_BG_PATHS)
 	_menu_bg.texture = _menu_tex
@@ -123,11 +169,20 @@ func _build_layout() -> void:
 	var margin := MarginContainer.new()
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+=======
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_menu_tex = SceneBackground.load_first(MENU_BG_PATHS)
+	_menu_bg.texture = _menu_tex
+
+	var margin := MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	for side in ["left", "top", "right", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 16)
 	add_child(margin)
 
 	var root := VBoxContainer.new()
+<<<<<<< HEAD
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_theme_constant_override("separation", 8)
 	margin.add_child(root)
@@ -135,13 +190,24 @@ func _build_layout() -> void:
 	# ---- barra superior: cada informação num balãozinho creme
 	_bar = Control.new()
 	_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+=======
+	root.add_theme_constant_override("separation", 8)
+	margin.add_child(root)
+
+	# ---- barra superior
+	_bar = Control.new()
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_bar.custom_minimum_size = Vector2(0, 58)
 	root.add_child(_bar)
 
 	# canto superior esquerdo: menu (☰), saldo e livro de receitas
 	var left := HBoxContainer.new()
+<<<<<<< HEAD
 	left.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	left.add_theme_constant_override("separation", 10)
+=======
+	left.add_theme_constant_override("separation", 12)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_bar.add_child(left)
 	_menu_button = MenuIconButton.new()
 	_menu_button.tooltip_text = "Menu"
@@ -149,13 +215,18 @@ func _build_layout() -> void:
 	left.add_child(_menu_button)
 	_money_label = Label.new()
 	_money_label.add_theme_font_size_override("font_size", 20)
+<<<<<<< HEAD
 	left.add_child(_chip(_money_label))
+=======
+	left.add_child(_money_label)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_book_button = _button("Livro de receitas", Flow.open_book)
 	left.add_child(_book_button)
 	left.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT, Control.PRESET_MODE_MINSIZE)
 
 	# centro superior: contador de dias
 	var center := VBoxContainer.new()
+<<<<<<< HEAD
 	center.add_theme_constant_override("separation", 0)
 	_day_label = Label.new()
 	_day_label.add_theme_font_size_override("font_size", 24)
@@ -182,6 +253,29 @@ func _build_layout() -> void:
 	# ---- navegação entre as páginas do restaurante
 	_nav = HBoxContainer.new()
 	_nav.mouse_filter = Control.MOUSE_FILTER_IGNORE
+=======
+	_bar.add_child(center)
+	_day_label = Label.new()
+	_day_label.add_theme_font_size_override("font_size", 28)
+	_day_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	center.add_child(_day_label)
+	_progress_label = Label.new()
+	_progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	center.add_child(_progress_label)
+	center.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_MINSIZE)
+	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
+
+	# canto superior direito: placar de pontos
+	_score_label = Label.new()
+	_score_label.add_theme_font_size_override("font_size", 24)
+	_score_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+	_bar.add_child(_score_label)
+	_score_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE)
+	_score_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+
+	# ---- navegação entre as páginas do restaurante
+	_nav = HBoxContainer.new()
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	root.add_child(_nav)
 	var place_names := ["Salão (atendimento)", "Cozinha", "Despensa e escritório"]
 	for i in place_names.size():
@@ -190,6 +284,7 @@ func _build_layout() -> void:
 		_nav.add_child(b)
 		_nav_buttons.append(b)
 
+<<<<<<< HEAD
 	# ---- balão de informações (pedido, dicas, botões...), com rolagem se o texto for longo
 	_body = HBoxContainer.new()
 	_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -206,10 +301,28 @@ func _build_layout() -> void:
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_content.minimum_size_changed.connect(_fit_card_later)
 	_scroll.add_child(_content)
+=======
+	# ---- uma cena visual por página
+	for path in VIEW_SCENES:
+		var v: Control = load(path).instantiate()
+		v.visible = false
+		root.add_child(v)
+		_views.append(v)
+
+	# ---- painéis de conteúdo
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	root.add_child(scroll)
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(content)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	for id in GameStates.Id.values():
 		var panel := VBoxContainer.new()
 		panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		panel.add_theme_constant_override("separation", 8)
+<<<<<<< HEAD
 		_content.add_child(panel)
 		_panels[id] = panel
 
@@ -246,10 +359,19 @@ func _build_layout() -> void:
 	_intro.finished.connect(Flow.finish_intro)
 	add_child(_intro)
 	_intro.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+=======
+		content.add_child(panel)
+		_panels[id] = panel
+
+	_msg_label = _label("")
+	_msg_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4))
+	root.add_child(_msg_label)
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 	# ---- menu suspenso (☰), por cima de tudo
 	_menu_overlay = PanelContainer.new()
 	_menu_overlay.visible = false
+<<<<<<< HEAD
 	_menu_overlay.position = Vector2(16, 82)
 	add_child(_menu_overlay)
 
@@ -295,6 +417,11 @@ func _fit_card() -> void:
 	var need := _content.get_combined_minimum_size().y
 	_scroll.custom_minimum_size.y = minf(need, avail)
 
+=======
+	_menu_overlay.position = Vector2(16, 76)
+	add_child(_menu_overlay)
+
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func _label(text: String, font_size: int = 0) -> Label:
 	var l := Label.new()
 	l.text = text
@@ -321,7 +448,11 @@ func _begin(id: GameStates.Id) -> VBoxContainer:
 
 # ==================================================================== eventos
 func _on_state_changed(s: int) -> void:
+<<<<<<< HEAD
 	_hide_notice()
+=======
+	_msg_label.text = ""
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_menu_overlay.visible = false
 	_confirm_exit = false
 	_confirm_delete = false
@@ -330,11 +461,14 @@ func _on_state_changed(s: int) -> void:
 	var in_menus: bool = s in [GameStates.Id.MAIN_MENU, GameStates.Id.INTRO, GameStates.Id.CREDITS] \
 		or (s == GameStates.Id.SETTINGS and Flow.settings_return == GameStates.Id.MAIN_MENU)
 	_bar.visible = not in_menus
+<<<<<<< HEAD
 	var intro_on := s == GameStates.Id.INTRO
 	if intro_on and not _intro.visible:
 		_intro.start()   # sempre começa da cena 1
 	_intro.visible = intro_on
 	_card.visible = not intro_on
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_menu_bg.visible = in_menus and _menu_tex != null
 	_menu_button.visible = s != GameStates.Id.ENDING
 	_book_button.visible = s in [GameStates.Id.RESTAURANT, GameStates.Id.ACTIVE_ORDER,
@@ -346,6 +480,7 @@ func _on_state_changed(s: int) -> void:
 		_last_place = place
 	for i in _nav_buttons.size():
 		_nav_buttons[i].disabled = (i == place)
+<<<<<<< HEAD
 	# a cena da última página fica ao fundo (também atrás do livro, dos desafios e das configurações)
 	var views_visible := not in_menus and s != GameStates.Id.ENDING
 	var view_index := _last_place
@@ -359,10 +494,16 @@ func _on_state_changed(s: int) -> void:
 	if s == GameStates.Id.RECIPE_BOOK and SalaoView.awaiting_recipe() and view_index == GameStates.Place.SALAO:
 		centered = false   # livro ao lado, cliente e pedido à vista para comparar
 	_set_card_mode(centered)
+=======
+	var views_visible := not (s in HIDE_VIEW_STATES)
+	for i in _views.size():
+		_views[i].visible = views_visible and i == _last_place
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	_refresh()
 
 func _on_notice(text: String) -> void:
 	_msg_label.text = text
+<<<<<<< HEAD
 	_toast.visible = text != ""
 	if text != "":
 		_toast.offset_top = _toast.offset_bottom - 10.0   # a altura se ajusta ao texto, crescendo para cima
@@ -371,6 +512,8 @@ func _on_notice(text: String) -> void:
 func _hide_notice() -> void:
 	_msg_label.text = ""
 	_toast.visible = false
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _on_top_changed(_value: int) -> void:
 	_update_top_bar()
@@ -383,8 +526,12 @@ func _update_top_bar() -> void:
 	_money_label.text = "Saldo: " + Money.format(Game.money_cents)
 	_day_label.text = "Dia %d" % Game.day
 	_score_label.text = "Pontos: %d" % Game.score
+<<<<<<< HEAD
 	var rep := ("%.1f" % Game.reputation).replace(".", ",")
 	_progress_label.text = "Pedidos: %d/%d  |  Nível %d  |  Reputação %s/5" % [Game.orders_completed, Flow.WIN_ORDERS, Flow.current_tier(), rep]
+=======
+	_progress_label.text = "Pedidos: %d/%d  |  Nível %d" % [Game.orders_completed, Flow.WIN_ORDERS, Flow.current_tier()]
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _refresh() -> void:
 	_update_top_bar()
@@ -404,7 +551,10 @@ func _refresh() -> void:
 		GameStates.Id.SETTINGS: _build_settings()
 		GameStates.Id.CREDITS: _build_credits()
 		GameStates.Id.ENDING: _build_ending()
+<<<<<<< HEAD
 		GameStates.Id.NEWSPAPER: _build_newspaper()
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 # ============================================================ menu suspenso (☰)
 func _toggle_menu() -> void:
@@ -485,11 +635,14 @@ func _build_settings() -> void:
 	hrow.add_child(_button("Alternar", Settings.toggle_hints))
 	p.add_child(hrow)
 
+<<<<<<< HEAD
 	var prow := HBoxContainer.new()
 	prow.add_child(_label("Paciência dos clientes (tempo): %s" % ("ligada" if Settings.patience_enabled else "desligada")))
 	prow.add_child(_button("Alternar", Settings.toggle_patience))
 	p.add_child(prow)
 
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	var trow := HBoxContainer.new()
 	trow.add_child(_label("Tamanho do texto: %s" % Settings.TEXT_SIZE_NAMES[Settings.text_size]))
 	for i in 3:
@@ -520,9 +673,18 @@ func _build_credits() -> void:
 		p.add_child(_label(line))
 	p.add_child(_button("Voltar", Flow.close_credits))
 
+<<<<<<< HEAD
 ## A introdução é a tela IntroStory (3 cenas em tela cheia); o balão de informações fica escondido.
 func _build_intro() -> void:
 	_begin(GameStates.Id.INTRO)
+=======
+func _build_intro() -> void:
+	var p := _begin(GameStates.Id.INTRO)
+	p.add_child(_label("A herança do vovô", 30))
+	p.add_child(_label("Você herdou de seu avô, Verine, um restaurante que precisa ser recuperado. Junto com ele veio um livro de receitas antigo, com páginas manchadas e incompletas.\n\nAtenda os clientes no Salão, prepare os pratos na Cozinha, cuide do estoque na Despensa e reinvista o lucro. Cada pedido pode esconder uma pista sobre os segredos do restaurante."))
+	p.add_child(_label("Controles: o jogo é jogado somente com o mouse. As respostas numéricas usam o teclado na tela. Use o botão de menu (três linhas, no canto superior esquerdo) para salvar."))
+	p.add_child(_button("Abrir o restaurante", Flow.finish_intro))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 # ------------------------------------------------------------------- SALÃO
 func _build_restaurant() -> void:
@@ -530,6 +692,7 @@ func _build_restaurant() -> void:
 	p.add_child(_label("Salão do restaurante", 28))
 	p.add_child(_label("Pedidos concluídos: %d de %d.   Pedidos de hoje: %d de %d." % [
 		Game.orders_completed, Flow.WIN_ORDERS, Game.orders_today, Flow.ORDERS_PER_DAY]))
+<<<<<<< HEAD
 	var special_text := _special_text()
 	if special_text != "":
 		p.add_child(_label(special_text))
@@ -550,6 +713,9 @@ func _special_text() -> String:
 		return ""
 	var r: Recipe = GameData.recipes[Game.daily_special]
 	return "Prato do dia: %s (+%d%% no valor se for pedido hoje; chega mais pedidos dele)" % [r.display_name, int(Flow.SPECIAL_BONUS_PERCENT)]
+=======
+	p.add_child(_button("Chamar próximo cliente", Flow.call_next_customer))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _build_order() -> void:
 	var p := _begin(GameStates.Id.ACTIVE_ORDER)
@@ -557,6 +723,7 @@ func _build_order() -> void:
 	if o == null:
 		return
 	p.add_child(_label("Cliente: %s" % o.customer_name, 26))
+<<<<<<< HEAD
 	if not SalaoView.order_in_bubble():
 		p.add_child(_label("\"%s\"" % o.description))
 	p.add_child(_label("Porções: %d   |   Situação: %s" % [o.servings, Order.state_name(o.state)]))
@@ -566,12 +733,20 @@ func _build_order() -> void:
 		p.add_child(_label("Restrição alimentar: %s. Na cozinha, use os ingredientes substitutos (compre na Despensa)." % GameData.restriction_text(o.restrictions), 16))
 	if Flow.waiting != null:
 		p.add_child(_label("Na fila: %s (a paciência dele também está passando)." % Flow.waiting.customer_name, 16))
+=======
+	p.add_child(_label("\"%s\"" % o.description))
+	p.add_child(_label("Porções: %d   |   Situação: %s" % [o.servings, Order.state_name(o.state)]))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	if Game.orders_completed == 0 and Settings.show_hints:
 		p.add_child(_label(_tutorial_hint(o), 16))
 
 	match o.state:
 		Order.State.CREATED, Order.State.INVESTIGATING:
+<<<<<<< HEAD
 			_add_recipe_choice(p, o)
+=======
+			p.add_child(_button("Investigar e escolher a receita", Flow.open_investigation))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		Order.State.IDENTIFIED:
 			var recipe: Recipe = GameData.recipes[o.selected_recipe_id]
 			p.add_child(_label("Receita escolhida: %s. Agora vá para a Cozinha: lá você ajusta as quantidades e prepara o prato." % recipe.display_name))
@@ -585,9 +760,29 @@ func _build_order() -> void:
 				p.add_child(_button("Ir para a cozinha", Flow.goto_place.bind(GameStates.Place.COZINHA)))
 	p.add_child(_button("Cancelar pedido", Flow.cancel_order))
 
+<<<<<<< HEAD
 ## Descobrir a receita: pistas + livro de receitas; a resposta é o NOME da receita,
 ## escolhido no bloco branco abaixo do pedido (no balão do cliente).
 func _add_recipe_choice(p: VBoxContainer, o: Order) -> void:
+=======
+func _tutorial_hint(o: Order) -> String:
+	match o.state:
+		Order.State.CREATED, Order.State.INVESTIGATING:
+			return "Dica: leia o pedido e compare com as receitas do livro. Neste pedido o cliente cita o prato."
+		Order.State.IDENTIFIED:
+			return "Dica: na Cozinha, resolva os desafios para ajustar as quantidades. Se faltar ingrediente, compre na Despensa."
+		Order.State.PREPARING:
+			return "Dica: execute cada etapa na Cozinha; com o prato pronto, volte ao Salão para entregar."
+	return ""
+
+func _build_investigation() -> void:
+	var p := _begin(GameStates.Id.INVESTIGATION)
+	var o := Flow.order
+	if o == null:
+		return
+	p.add_child(_label("Investigação — pedido de %s" % o.customer_name, 26))
+	p.add_child(_label("\"%s\"" % o.description))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	p.add_child(_label("Pistas:", 20))
 	var shown := o.visible_clues()
 	if shown.is_empty():
@@ -597,6 +792,7 @@ func _add_recipe_choice(p: VBoxContainer, o: Order) -> void:
 		p.add_child(_label("• " + clue.text))
 	p.add_child(_button("Pedir pista extra (reduz o pagamento)", Flow.reveal_hint,
 		o.hints_used >= o.hidden_clue_ids.size()))
+<<<<<<< HEAD
 	p.add_child(_label("Consulte o livro e escolha o nome da receita no balão do cliente."))
 	p.add_child(_button("Abrir o livro de receitas", Flow.open_book))
 	_place_recipe_names(p)
@@ -656,12 +852,23 @@ func _build_book() -> void:
 	if choosing:
 		p.add_child(_label("Compare com o pedido de %s e clique no nome da receita no balão dele." % Flow.order.customer_name, 16))
 		_place_recipe_names(p)
+=======
+	p.add_child(_label("Receitas do livro:", 20))
+	for rid in Game.unlocked_recipes:
+		p.add_child(_recipe_card(GameData.recipes[rid], true))
+	p.add_child(_button("Voltar", Flow.go.bind(GameStates.Id.ACTIVE_ORDER)))
+
+func _build_book() -> void:
+	var p := _begin(GameStates.Id.RECIPE_BOOK)
+	p.add_child(_label("Livro de receitas do vovô", 26))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	for rid in Game.unlocked_recipes:
 		p.add_child(_recipe_card(GameData.recipes[rid], false))
 	p.add_child(_button("Fechar o livro", Flow.close_book))
 
 func _recipe_card(recipe: Recipe, selectable: bool) -> Control:
 	var card := PanelContainer.new()
+<<<<<<< HEAD
 	card.add_theme_stylebox_override("panel", UIStyle.cream_box(UIStyle.CREAM_DARK, 2, 10, 10))
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var row := HBoxContainer.new()
@@ -685,12 +892,24 @@ func _recipe_card(recipe: Recipe, selectable: bool) -> Control:
 	if recipe.has_heat():
 		box.add_child(_label("Etapa com fogo \"%s\": tempo ideal = %d + %d × p minutos (p = nº de porções)" % [
 			recipe.steps[recipe.heat_step], recipe.heat_base, recipe.heat_per_serving]))
+=======
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var box := VBoxContainer.new()
+	card.add_child(box)
+	box.add_child(_label(recipe.display_name, 20))
+	box.add_child(_label(recipe.description))
+	box.add_child(_label("Rende %d porções (dados originais)" % recipe.base_servings))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	for line in recipe.lines:
 		var ing: Ingredient = GameData.ingredients[line["ingredient_id"]]
 		var unit: Units.Unit = line["unit"]
 		if Game.is_line_known(recipe, line):
 			var rec_note := " (recuperado)" if line["hidden"] else ""
+<<<<<<< HEAD
 			box.add_child(_icon_label(ing.id, "%s: %s %s%s" % [ing.display_name,
+=======
+			box.add_child(_label("• %s: %s %s%s" % [ing.display_name,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 				Units.fmt_amount(Game.get_known_amount(recipe, line)), Units.label(unit), rec_note]))
 		else:
 			box.add_child(_label("• %s: ??? %s (página manchada)" % [ing.display_name, Units.label(unit)]))
@@ -712,11 +931,15 @@ func _build_delivery() -> void:
 		return
 	p.add_child(_label("Entrega para %s" % o.customer_name, 26))
 	p.add_child(_label("Valor do prato: %s" % Money.format(Flow.delivery_bill_cents)))
+<<<<<<< HEAD
 	if o.is_phone():
 		p.add_child(_label("Entrega por telefone: %s" % o.address))
 		if Flow.delivery_freight_cents > 0:
 			p.add_child(_label("Frete: %s (entra na conta)" % Money.format(Flow.delivery_freight_cents)))
 	for step in Flow.delivery_steps():
+=======
+	for step in [["portion", "Dividir o prato"], ["change", "Receber pagamento e dar o troco"]]:
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 		var done: bool = Flow.delivery_steps_done.has(step[0])
 		p.add_child(_label("%s %s" % ["[x]" if done else "[ ]", step[1]]))
 	p.add_child(_button(Flow.delivery_next_label(), Flow.delivery_next))
@@ -726,6 +949,7 @@ func _build_result() -> void:
 	var r := Flow.last_result
 	if r.is_empty():
 		return
+<<<<<<< HEAD
 	var reactions := ["Péssimo!", "Meh...", "Bom.", "Muito bom!", "Excelente!"]
 	var stars := clampi(int(r["stars"]), 1, 5)
 	p.add_child(_label("Atendimento concluído — %s" % r["customer"], 26))
@@ -747,6 +971,14 @@ func _build_result() -> void:
 		p.add_child(_label("Porção: %s" % Flow.PORTION_NAMES.get(str(r["portion"]), "Normal")))
 	if int(r["refund"]) > 0:
 		p.add_child(_label("Reembolso (cliente insatisfeito): −%s" % Money.format(r["refund"])))
+=======
+	p.add_child(_label("Atendimento concluído — %s" % r["customer"], 26))
+	p.add_child(_label("Preço-base: %s" % Money.format(r["base"])))
+	p.add_child(_label("Bônus de melhorias: %s" % Money.format(r["upgrade_bonus"])))
+	p.add_child(_label("Bônus por atendimento perfeito: %s" % Money.format(r["bonus"])))
+	p.add_child(_label("Penalidades (%d erro(s), %d pista(s) extra): −%s" % [
+		r["mistakes"], r["hints"], Money.format(r["penalty"])]))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	p.add_child(_label("Total recebido: %s" % Money.format(r["total"]), 22))
 	p.add_child(_label("Pontos ganhos neste pedido: +%d" % int(r["points"])))
 	if str(r["story"]) != "":
@@ -756,6 +988,7 @@ func _build_result() -> void:
 func _build_day_summary() -> void:
 	var p := _begin(GameStates.Id.DAY_SUMMARY)
 	p.add_child(_label("Fim do dia %d" % Game.day, 30))
+<<<<<<< HEAD
 	p.add_child(_label("Pedidos atendidos hoje: %d   |   Reputação: %s de 5" % [Game.orders_today, ("%.1f" % Game.reputation).replace(".", ",")]))
 	p.add_child(_label("Aluguel e contas cobrados hoje: %s" % Money.format(Flow.last_rent_cents)))
 	p.add_child(_label("Receita do dia: %s   |   Despesas do dia: %s   |   Lucro do dia: %s" % [
@@ -765,6 +998,12 @@ func _build_day_summary() -> void:
 		p.add_child(_label("Saldo NEGATIVO (%s)! Se o dia começar assim por %d dias seguidos, o restaurante fecha. Peça ajuda ao vizinho na Despensa ou capriche nos próximos pedidos." % [
 			Money.format(Game.money_cents), Game.BANKRUPT_DAYS], 18))
 	p.add_child(_label(Flow.chapter_goal_status(), 16))
+=======
+	p.add_child(_label("Pedidos atendidos hoje: %d" % Game.orders_today))
+	p.add_child(_label("Receita do dia: %s   |   Despesas do dia: %s   |   Lucro do dia: %s" % [
+		Money.format(Game.day_income()), Money.format(Game.day_expenses()),
+		Money.format(Game.day_income() - Game.day_expenses())]))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	if not Game.day_history.is_empty():
 		p.add_child(_label("Dias anteriores:", 20))
 		var start := maxi(0, Game.day_history.size() - 5)
@@ -807,6 +1046,7 @@ func _build_kitchen_prep(p: VBoxContainer, o: Order) -> void:
 		p.add_child(_label("Ingredientes para %d porções:" % o.servings, 18))
 		for line in Flow.adjusted.lines:
 			var ing: Ingredient = GameData.ingredients[line["ingredient_id"]]
+<<<<<<< HEAD
 			var orig_id: String = str(line.get("original_id", ing.id))
 			var pct := o.mod_percent(orig_id)
 			if pct <= -100:
@@ -826,11 +1066,19 @@ func _build_kitchen_prep(p: VBoxContainer, o: Order) -> void:
 			if pct != 0:
 				mod_text = "  [pedido: %s%d%%]" % ["+" if pct > 0 else "−", absi(pct)]
 			p.add_child(_icon_label(ing.id, "%s%s: %s%s   (estoque: %d %s)" % [ing.display_name, swap_text, amount_text, mod_text,
+=======
+			var amount_text := "???"
+			var hidden_by_scaling: bool = Flow.adjusted.servings != recipe.base_servings and not Flow.challenge_queue.is_empty()
+			if line["known"] and not hidden_by_scaling:
+				amount_text = "%s %s" % [Units.fmt_amount(line["amount"]), Units.label(line["unit"])]
+			p.add_child(_label("• %s: %s   (estoque: %d %s)" % [ing.display_name, amount_text,
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 				Game.get_stock(ing.id), Units.label(ing.unit)]))
 	if not Flow.challenge_queue.is_empty():
 		p.add_child(_label("Faltam %d desafio(s) para fechar as quantidades." % Flow.challenge_queue.size()))
 		p.add_child(_button("Resolver próximo desafio", Flow.next_order_challenge))
 	elif Flow.is_ready_to_cook():
+<<<<<<< HEAD
 		_add_portion_choice(p, o)
 		p.add_child(_button("Começar a preparar", Flow.start_preparation))
 	p.add_child(_button("Comprar ingredientes na Despensa", Flow.goto_place.bind(GameStates.Place.DESPENSA)))
@@ -862,6 +1110,11 @@ func _add_portion_choice(p: VBoxContainer, o: Order) -> void:
 				parts.append("%s %d %s" % [ing.display_name, int(line["base_needed"]), Units.label(ing.unit)])
 		p.add_child(_label("Vai sair do estoque: " + ", ".join(parts), 16))
 
+=======
+		p.add_child(_button("Começar a preparar", Flow.start_preparation))
+	p.add_child(_button("Comprar ingredientes na Despensa", Flow.goto_place.bind(GameStates.Place.DESPENSA)))
+
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func _build_kitchen_cooking(p: VBoxContainer) -> void:
 	var d := Flow.dish
 	if d == null:
@@ -874,6 +1127,7 @@ func _build_kitchen_cooking(p: VBoxContainer) -> void:
 			mark = "[x]"
 		elif i == d.steps_done and d.state == Dish.State.PREPARING:
 			mark = "[>]"
+<<<<<<< HEAD
 		var step_text := "%s %s" % [mark, d.steps[i]]
 		if i == recipe.heat_step and i < d.steps_done and d.cook_result != "":
 			step_text += "  (cozimento: %s)" % d.cook_result
@@ -899,10 +1153,16 @@ func _build_kitchen_cooking(p: VBoxContainer) -> void:
 			_build_heat_controls(p, recipe, d)
 		else:
 			p.add_child(_button("Executar: %s" % d.next_step_label(), Flow.do_prep_step))
+=======
+		p.add_child(_label("%s %s" % [mark, d.steps[i]]))
+	if d.state == Dish.State.PREPARING:
+		p.add_child(_button("Executar: %s" % d.next_step_label(), Flow.do_prep_step))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	elif d.state == Dish.State.READY:
 		p.add_child(_label("O prato está pronto! Leve ao cliente no Salão.", 20))
 		p.add_child(_button("Ir para o salão", Flow.goto_place.bind(GameStates.Place.SALAO)))
 
+<<<<<<< HEAD
 ## Etapa com fogo/forno: o jogador calcula o tempo (função do 1º grau) e ajusta o timer.
 func _build_heat_controls(p: VBoxContainer, recipe: Recipe, d: Dish) -> void:
 	p.add_child(_label("Etapa com fogo: %s" % d.next_step_label(), 20))
@@ -923,11 +1183,15 @@ func _build_heat_controls(p: VBoxContainer, recipe: Recipe, d: Dish) -> void:
 ## Toda questão tem 4 alternativas (A, B, C, D) num bloco branco logo abaixo do enunciado.
 ## Desafios do cliente: enunciado + bloco no balão ao lado dele (Salão). Os demais: no painel.
 ## Clicar numa alternativa já responde: certa fica verde, errada fica vermelha (e conta erro).
+=======
+# ---------------------------------------------------------------- DESAFIO
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 func _build_challenge() -> void:
 	var p := _begin(GameStates.Id.MATH_CHALLENGE)
 	var c := Flow.current_challenge
 	if c == null:
 		return
+<<<<<<< HEAD
 	_choice_buttons.clear()
 	var salao := _views[GameStates.Place.SALAO] as SalaoView
 	if SalaoView.challenge_in_bubble() and salao != null:
@@ -1015,11 +1279,46 @@ func _style_choice(b: Button, bg: Color) -> void:
 		b.add_theme_stylebox_override(state_name, st)
 	for color_name in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_disabled_color"]:
 		b.add_theme_color_override(color_name, CHOICE_TEXT)
+=======
+	_answer = ""
+	_selected_choice = -1
+	p.add_child(_label("Desafio: %s (nível %d)" % [c.topic, c.tier], 26))
+	p.add_child(_label(c.statement))
+	_hint_label = _label("")
+	p.add_child(_hint_label)
+	p.add_child(_button("Pedir uma dica", _on_hint))
+
+	_answer_label = _label("Resposta: ", 22)
+	p.add_child(_answer_label)
+
+	if c.type == MathChallenge.Type.MULTIPLE_CHOICE:
+		for i in c.choices.size():
+			p.add_child(_button(c.choices[i], _on_choice.bind(i)))
+	else:
+		_keypad = GridContainer.new()
+		_keypad.columns = 4
+		var keys := ["7", "8", "9", "⌫", "4", "5", "6", "C", "1", "2", "3", ",", "0", "/", ";", "-"]
+		for k in keys:
+			var kb := _button(k, _on_key.bind(k))
+			kb.custom_minimum_size = Vector2(70, 44)
+			_keypad.add_child(kb)
+		p.add_child(_keypad)
+
+	_feedback_label = _label("")
+	p.add_child(_feedback_label)
+	_submit_button = _button("Responder", _on_submit)
+	p.add_child(_submit_button)
+	_continue_button = _button("Continuar", Flow.leave_challenge)
+	_continue_button.visible = false
+	p.add_child(_continue_button)
+	p.add_child(_button("Voltar (resolver depois)", Flow.leave_challenge))
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 func _on_hint() -> void:
 	if Flow.current_challenge != null:
 		_hint_label.text = "Dica: " + Flow.current_challenge.hint
 
+<<<<<<< HEAD
 func _on_choice(index: int) -> void:
 	if Flow.current_challenge == null or index >= _choice_buttons.size():
 		return
@@ -1034,6 +1333,45 @@ func _on_choice(index: int) -> void:
 	else:
 		_style_choice(b, CHOICE_WRONG)
 		b.disabled = true
+=======
+func _on_key(k: String) -> void:
+	if k == "⌫":
+		_answer = _answer.left(maxi(0, _answer.length() - 1))
+	elif k == "C":
+		_answer = ""
+	else:
+		_answer += k
+	_answer_label.text = "Resposta: " + _answer
+
+func _on_choice(index: int) -> void:
+	_selected_choice = index
+	var c := Flow.current_challenge
+	_answer_label.text = "Resposta: " + c.choices[index]
+
+func _on_submit() -> void:
+	var c := Flow.current_challenge
+	if c == null:
+		return
+	var raw: Variant
+	if c.type == MathChallenge.Type.MULTIPLE_CHOICE:
+		if _selected_choice < 0:
+			_feedback_label.text = "Escolha uma alternativa."
+			return
+		raw = _selected_choice
+	else:
+		if _answer.strip_edges() == "":
+			_feedback_label.text = "Digite uma resposta no teclado da tela."
+			return
+		raw = _answer
+	var res := Flow.submit_answer(raw)
+	_feedback_label.text = res["message"]
+	if res["ok"]:
+		_submit_button.disabled = true
+		_continue_button.visible = true
+		if _keypad != null:
+			for kb in _keypad.get_children():
+				(kb as Button).disabled = true
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 
 # ----------------------------------------------------------------- DESPENSA
 func _build_admin() -> void:
@@ -1098,6 +1436,7 @@ func _on_buy_upgrade(uid: String) -> void:
 # ---------------------------------------------------------------------- FIM
 func _build_ending() -> void:
 	var p := _begin(GameStates.Id.ENDING)
+<<<<<<< HEAD
 	if Flow.ending_kind == "falencia":
 		p.add_child(_label("O restaurante fechou as portas...", 32))
 		p.add_child(_label("Foram %d dias seguidos com o saldo negativo e as contas não fecharam. O livro do vovô volta para a gaveta — mas você pode tentar de novo!" % Game.BANKRUPT_DAYS))
@@ -1105,6 +1444,8 @@ func _build_ending() -> void:
 			Game.score, Game.best_score, "  (novo recorde!)" if Flow.new_record else ""], 22))
 		p.add_child(_button("Voltar ao menu principal", Flow.go.bind(GameStates.Id.MAIN_MENU)))
 		return
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
 	p.add_child(_label("O restaurante renasceu!", 32))
 	p.add_child(_label("Você atendeu %d pedidos em %d dias e terminou com %s em caixa (lucro total: %s)." % [
 		Game.orders_completed, Game.day, Money.format(Game.money_cents), Money.format(Game.profit())]))
@@ -1112,6 +1453,7 @@ func _build_ending() -> void:
 		Game.score, Game.best_score, "  (novo recorde!)" if Flow.new_record else ""], 22))
 	p.add_child(_label("(Desfecho provisório: o final da história ainda será definido pela equipe.)"))
 	p.add_child(_button("Voltar ao menu principal", Flow.go.bind(GameStates.Id.MAIN_MENU)))
+<<<<<<< HEAD
 
 # --------------------------------------------------------------------- JORNAL
 ## Jornal do dia: manchete (capítulo ou evento), evento do dia, gráfico você × rival e um desafio opcional.
@@ -1159,3 +1501,5 @@ func _build_newspaper() -> void:
 	else:
 		p.add_child(_button("Desafio do jornal: analisar os números do rival (bônus)", Flow.start_news_challenge))
 	p.add_child(_button("Abrir o restaurante", Flow.close_newspaper))
+=======
+>>>>>>> d565e7e4fb61ac8b2a9bb15a8d9b0cec7b06978d
